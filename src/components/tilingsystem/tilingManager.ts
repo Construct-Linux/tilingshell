@@ -530,7 +530,7 @@ export class TilingManager {
                         const [x, y] = event.get_coords();
                         TouchPointer.get().onTouchEvent(x, y);
                         // Move the actual mouse cursor to match tablet position
-                        const seat = Clutter.get_default_backend().get_default_seat();
+                        const seat = global.stage.get_context().get_backend().get_default_seat();
                         seat.warp_pointer(x, y);
                     }
                 }
