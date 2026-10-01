@@ -791,6 +791,10 @@ export default class TilingShellExtension extends Extension {
         this._indicator?.destroy();
         this._indicator = null;
 
+        // destroy tiling managers
+        this._tilingManagers.forEach((tm) => tm.destroy());
+        this._tilingManagers = [];
+
         this._resizingManager?.destroy();
         this._resizingManager = null;
 
