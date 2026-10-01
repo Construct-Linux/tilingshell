@@ -304,7 +304,19 @@ export class TilingManager {
             TilingShellWindowManager.get(),
             'unmaximized',
             (_, window: Meta.Window) => {
-                if (Settings.ENABLE_AUTO_TILING) this._autoTile(window, false);
+                const extWin = window as ExtendedWindow;
+                const tile = extWin.tileBeforeMaximize;
+                delete extWin.tileBeforeMaximize;
+                if (Settings.ENABLE_AUTO_TILING) {
+                    this._autoTile(window, false);
+                    return;
+                }
+                // restoring puts the window back in the rect it had before
+                // maximizing, so give it back the tile it had there. Skip it
+                // when the window was dragged out of maximize (the moving grab
+                // decides its tile) or was already tiled somewhere else
+                if (tile && !extWin.assignedTile && !this._isGrabbingWindow)
+                    extWin.assignedTile = tile;
             },
         );
 
@@ -313,7 +325,12 @@ export class TilingManager {
             TilingShellWindowManager.get(),
             'maximized',
             (_, window: Meta.Window) => {
-                delete (window as ExtendedWindow).assignedTile;
+                const extWin = window as ExtendedWindow;
+                // every monitor's manager handles this signal, only the first
+                // one finds the tile
+                if (extWin.assignedTile)
+                    extWin.tileBeforeMaximize = extWin.assignedTile;
+                delete extWin.assignedTile;
             },
         );
     }

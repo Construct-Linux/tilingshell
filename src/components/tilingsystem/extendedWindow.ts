@@ -4,6 +4,7 @@ import { Mtk, Meta } from '../../gi/ext';
 interface ExtendedWindow extends Meta.Window {
     originalSize: Mtk.Rectangle | undefined;
     assignedTile: Tile | undefined;
+    tileBeforeMaximize?: Tile;
 }
 
 export default ExtendedWindow;
