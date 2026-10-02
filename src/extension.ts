@@ -20,7 +20,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { Extension } from './polyfill'; // must stay at the top
+import { Extension, ExtensionMetadata } from 'resource:///org/gnome/shell/extensions/extension.js';
 import { Gio, GLib, Meta } from './gi/ext';
 import { logger } from './utils/logger';
 import {
@@ -36,7 +36,6 @@ import Settings from './settings/settings';
 import SignalHandling from './utils/signalHandling';
 import GlobalState from './utils/globalState';
 import Indicator from './indicator/indicator';
-import { ExtensionMetadata } from 'resource:///org/gnome/shell/extensions/extension.js';
 import DBus from './dbus';
 import { KeyBindingsDirection, FocusSwitchDirection } from './keybindings';
 import KeyBindings from './keybindings';
