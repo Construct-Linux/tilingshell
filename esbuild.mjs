@@ -3,15 +3,11 @@ import { sassPlugin } from 'esbuild-sass-plugin'
 import fsSync from 'fs';
 import path from 'path';
 import { glob } from 'glob';
-import { ESLint } from "eslint";
 
 const resourcesDir = "resources";
 const distDir = "dist";
 
 async function preprocess(files) {
-    const eslint = new ESLint({
-        fix: true,
-    });
     await Promise.all(files.map(async (filename) => {
         let text = fsSync.readFileSync(filename, 'utf-8');
 
@@ -28,21 +24,6 @@ async function preprocess(files) {
                 return `import ${imports} from "${importPath}"`;
             }
         );
-
-        // Run ESLint on the file
-        const lintResults = await eslint.lintText(text, { filePath: filename });
-        text = lintResults.length > 0 ? lintResults[0].output || text : text;
-
-        // Check if there are remaining errors
-        const hasErrors = lintResults.some((r) =>
-            r.messages.some((m) => m.severity === 2),
-        );
-
-        if (hasErrors) {
-            const formatter = await eslint.loadFormatter("stylish");
-            const output = formatter.format(lintResults);
-            console.error(output);
-        }
 
         fsSync.writeFileSync(filename, text, 'utf-8');
     }));

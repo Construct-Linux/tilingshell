@@ -18,22 +18,12 @@
     "dev:wayland": "npm run build && npm run install:extension && npm run wayland-session",
     "build:translations": "for file in $(ls translations/*.po); do mkdir -p resources/locale/$(basename $file .po)/LC_MESSAGES; msgfmt -c $file -o resources/locale/$(basename $file .po)/LC_MESSAGES/tilingshell.mo; done",
     "create:translations": "rm -f translations/tilingshell@ferrarodomenico.com.pot && xgettext --from-code=UTF-8 --output=translations/tilingshell@ferrarodomenico.com.pot --language=javascript --force-po $(find ./dist -name '*.js')",
-    "merge:translations": "for file in translations/*.po; do msgattrib --no-fuzzy --output-file=$file $file && msgmerge --update --no-fuzzy-matching --previous -N $file translations/tilingshell@ferrarodomenico.com.pot --backup=none; done",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "lint:build": "eslint dist --fix",
-    "prettier:check": "prettier --check \"**/*.{ts,scss}\"",
-    "prettier:fix": "prettier --write \"**/*.{ts,scss}\""
+    "merge:translations": "for file in translations/*.po; do msgattrib --no-fuzzy --output-file=$file $file && msgmerge --update --no-fuzzy-matching --previous -N $file translations/tilingshell@ferrarodomenico.com.pot --backup=none; done"
   },
   "devDependencies": {
     "esbuild": "^0.27.2",
     "esbuild-sass-plugin": "^3.6.0",
-    "eslint": "^9.39.1",
-    "eslint-config-prettier": "^10.1.8",
-    "@typescript-eslint/eslint-plugin": "^8.48.0",
-    "@typescript-eslint/parser": "^8.48.0",
     "glob": "^13.0.0",
-    "prettier": "^3.7.3",
     "typescript": "^5.9.2"
   },
   "dependencies": {
