@@ -98,11 +98,6 @@ build({
 
 function verifyImports(modules, fileName) {
     return new Promise(resolve => {
-        if (fileName.includes("monitorDescription.js")) {
-            resolve();
-            return;
-        }
-
         const content = fsSync.readFileSync(fileName, 'utf-8');
         const lines = content.split('\n');
         modules.forEach(m => {
