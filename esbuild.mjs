@@ -1,6 +1,5 @@
 import { build } from 'esbuild';
 import { sassPlugin } from 'esbuild-sass-plugin'
-import fs from 'fs/promises';
 import fsSync from 'fs';
 import path from 'path';
 import { glob } from 'glob';
@@ -77,7 +76,6 @@ build({
 
     // Post-build sync steps
     fsSync.renameSync(path.resolve(distDir, "styles/stylesheet.css"), path.resolve(distDir, "stylesheet.css"));
-    fsSync.cpSync(resourcesDir, distDir, { recursive: true });
     fsSync.renameSync(path.resolve(distDir, "styles/prefs.css"), path.resolve(distDir, "prefs.css"));
     fsSync.cpSync(resourcesDir, distDir, { recursive: true });
 
@@ -93,20 +91,9 @@ build({
         else verifyImports(['Gdk', 'Gtk', 'Adw'], f);
     }));
 
-    // GNOME Shell 42-44 were served by the legacy build
-    const metadataJson = await fs.readFile(path.resolve(resourcesDir, 'metadata.json')).then(JSON.parse);
-    const shellVersions = metadataJson["shell-version"].filter(v => +v > 44);
-
-    await Promise.all([
-        verification,
-        fs.writeFile(
-            path.join(distDir, 'metadata.json'),
-            JSON.stringify({ ...metadataJson, 'shell-version': shellVersions }, null, 4)
-        ),
-    ]);
+    await verification;
     console.log();
     console.log("📁 ", "Extension directory:", distDir);
-    console.log("📖 ", "GNOME Shells:", shellVersions);
 });
 
 function verifyImports(modules, fileName) {

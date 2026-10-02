@@ -3,15 +3,6 @@
   "description": "Extend Gnome Shell with advanced tiling window management. Supports multiple monitors, Windows 11 Snap Assistant, Fancy Zones, automatic tiling, keyboard shortcuts, customised tiling layouts and more!",
   "uuid": "tilingshell@ferrarodomenico.com",
   "shell-version": [
-    "42",
-    "43",
-    "44",
-    "45",
-    "46",
-    "47",
-    "48",
-    "49",
-    "50",
     "51"
   ],
   "version": 99,
