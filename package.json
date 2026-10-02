@@ -21,12 +21,12 @@
     "merge:translations": "for file in translations/*.po; do msgattrib --no-fuzzy --output-file=$file $file && msgmerge --update --no-fuzzy-matching --previous -N $file translations/tilingshell@ferrarodomenico.com.pot --backup=none; done"
   },
   "devDependencies": {
-    "esbuild": "^0.27.2",
-    "esbuild-sass-plugin": "^3.6.0",
-    "glob": "^13.0.0",
-    "typescript": "^5.9.2"
+    "esbuild": "^0.28.2",
+    "esbuild-sass-plugin": "^3.7.0",
+    "glob": "^13.0.6",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
-    "@girs/gnome-shell": "^49.1.0"
+    "@girs/gnome-shell": "^50.0.4"
   }
 }

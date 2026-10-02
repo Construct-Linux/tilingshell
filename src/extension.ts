@@ -20,7 +20,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { Extension, ExtensionMetadata } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import { Gio, GLib, Meta } from './gi/ext';
 import { logger } from './utils/logger';
 import {
@@ -63,7 +63,7 @@ export default class TilingShellExtension extends Extension {
     private _windowBorderManager: WindowBorderManager | null;
     private _raiseTogetherManager: RaiseTogetherManager | null;
 
-    constructor(metadata: ExtensionMetadata) {
+    constructor(metadata: ConstructorParameters<typeof Extension>[0]) {
         super(metadata);
         this._signals = null;
         this._fractionalScalingEnabled = false;

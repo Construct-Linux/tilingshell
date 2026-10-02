@@ -10,7 +10,6 @@
       "ES2022"
     ],
     "experimentalDecorators": true,
-    "baseUrl": "./",
   },
   "include": [
     "ambient.d.ts",
