@@ -1,7 +1,6 @@
 import { St, Meta, Mtk, Clutter, Gio, GLib, Shell } from '../gi/ext';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { Monitor } from 'resource:///org/gnome/shell/ui/layout.js';
-import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 export function buildBlurEffect(radius: number): Shell.BlurEffect {
     const effect = new Shell.BlurEffect();
@@ -107,14 +106,9 @@ export const buildTileGaps = (
 export const isFractionalScalingEnabled = (
     mutterSettings: Gio.Settings,
 ): boolean => {
-    // Since GNOME 49, fractional scaling (the logical monitor layout mode) is
-    // enabled by default on Wayland and is no longer an experimental feature
-    const GNOME_VERSION_MAJOR = Number(Config.PACKAGE_VERSION.split('.')[0]);
-    // Meta.is_wayland_compositor() was removed in newer GNOME versions
-    const isWayland = Meta.is_wayland_compositor
-        ? Meta.is_wayland_compositor()
-        : GLib.getenv('XDG_SESSION_TYPE') === 'wayland';
-    if (isWayland && GNOME_VERSION_MAJOR >= 49) return true;
+    // fractional scaling (the logical monitor layout mode) is always on in a
+    // Wayland session, no longer an experimental feature
+    if (GLib.getenv('XDG_SESSION_TYPE') === 'wayland') return true;
 
     return (
         mutterSettings

@@ -27,15 +27,11 @@ import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/
 import Layout from './components/layout/Layout';
 import SettingsExport from './settings/settingsExport';
 import { gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
-// @ts-expect-error "Module exists"
-import * as Config from 'resource:///org/gnome/Shell/Extensions/js/misc/config.js';
 
 const debug = logger('prefs');
 const RESOURCES_PREFIX = "/org/gnome/Shell/Extensions/tilingshell"; // must match the prefix in resources.gresources.xml
 
 export default class TilingShellExtensionPreferences extends ExtensionPreferences {
-    private GNOME_VERSION_MAJOR = Number(Config.PACKAGE_VERSION.split('.')[0]);
-
     loadCssAndResources() {
         const resource = Gio.Resource.load(`${this.path}/resources.gresource`);
         Gio.resources_register(resource);
@@ -169,16 +165,14 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         });
         windowBorderColorRow.add_suffix(colorButton);
         colorButton.set_visible(Settings.WINDOW_USE_CUSTOM_BORDER_COLOR);
-        if (this.GNOME_VERSION_MAJOR >= 47) {
-            const customColorDropDown = this._buildCustomColorDropDown(
-                Settings.WINDOW_USE_CUSTOM_BORDER_COLOR,
-                (use_custom_color: boolean) => {
-                    colorButton.set_visible(use_custom_color);
-                    Settings.WINDOW_USE_CUSTOM_BORDER_COLOR = use_custom_color;
-                },
-            );
-            windowBorderColorRow.add_suffix(customColorDropDown);
-        }
+        const customColorDropDown = this._buildCustomColorDropDown(
+            Settings.WINDOW_USE_CUSTOM_BORDER_COLOR,
+            (use_custom_color: boolean) => {
+                colorButton.set_visible(use_custom_color);
+                Settings.WINDOW_USE_CUSTOM_BORDER_COLOR = use_custom_color;
+            },
+        );
+        windowBorderColorRow.add_suffix(customColorDropDown);
         windowBorderExpanderRow.add_row(windowBorderColorRow);
 
         const animationsRow = new Adw.ExpanderRow({
@@ -1452,9 +1446,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         window.connect('map', () => {
             fc.set_transient_for(window);
         });
-        // due to a bug, file chooser doesn't open on GNOME 42 when a filter is set
-        // filter is then enabled for GNOME 43+
-        if (this.GNOME_VERSION_MAJOR >= 43) fc.set_filter(filter);
+        fc.set_filter(filter);
         fc.set_current_folder(Gio.File.new_for_path(GLib.get_home_dir()));
         fc.connect('response', onResponse);
 

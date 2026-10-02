@@ -48,7 +48,6 @@ import TilingShellWindowManager from './components/windowManager/tilingShellWind
 import ExtendedWindow from './components/tilingsystem/extendedWindow';
 import OverriddenAltTab from './components/altTab/overriddenAltTab';
 import { LayoutSwitcherPopup } from './components/layoutSwitcher/layoutSwitcher';
-import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 import { RaiseTogetherManager } from './components/raiseTogether/raiseTogetherManager';
 
 const debug = logger('extension');
@@ -104,11 +103,8 @@ export default class TilingShellExtension extends Extension {
     }
 
     private _onInstall() {
-        const GNOME_VERSION_MAJOR = Number(
-            Config.PACKAGE_VERSION.split('.')[0],
-        );
-        // Force use of customer border color on GNOME < 47 since accent colors are not available
-        Settings.WINDOW_USE_CUSTOM_BORDER_COLOR = GNOME_VERSION_MAJOR < 47;
+        // the border follows the shell's accent color unless the user picks one
+        Settings.WINDOW_USE_CUSTOM_BORDER_COLOR = false;
     }
 
     enable(): void {
