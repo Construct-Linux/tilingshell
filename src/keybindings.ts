@@ -271,10 +271,10 @@ export default class KeyBindings extends GObject.Object {
             (
                 display: Meta.Display,
                 _unused,
-                event: Clutter.Event,
+                _event: Clutter.Event,
                 binding: Meta.KeyBinding,
             ) => {
-                this._onCycleLayouts(display, event, binding, this._cycleLayoutsAction!);
+                this._onCycleLayouts(display, binding, this._cycleLayoutsAction!);
             },
         );
 
@@ -286,16 +286,16 @@ export default class KeyBindings extends GObject.Object {
             (
                 display: Meta.Display,
                 _unused,
-                event: Clutter.Event,
+                _event: Clutter.Event,
                 binding: Meta.KeyBinding,
             ) => {
-                this._onCycleLayouts(display, event, binding, this._cycleLayoutsBackwardAction!);
+                this._onCycleLayouts(display, binding, this._cycleLayoutsBackwardAction!);
             },
         );
     }
 
-    private _onCycleLayouts(display: Meta.Display, event: Clutter.Event, binding: Meta.KeyBinding, action: number) {
-        const mask = event.get_mask ? event.get_mask() : binding.get_mask();
+    private _onCycleLayouts(display: Meta.Display, binding: Meta.KeyBinding, action: number) {
+        const mask = binding.get_mask();
         this.emit('cycle-layouts', display, action, mask);
     }
 

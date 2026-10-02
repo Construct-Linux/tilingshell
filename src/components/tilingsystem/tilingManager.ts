@@ -214,7 +214,7 @@ export class TilingManager {
                 const moving = (grabOp & ~1024) === 1;
                 if (!moving) return;
 
-                this._onWindowGrabBegin(window, grabOp);
+                this._onWindowGrabBegin(window);
             },
         );
 
@@ -514,7 +514,7 @@ export class TilingManager {
         this._edgeTilingManager.workarea = this._workArea;
     }
 
-    private _onWindowGrabBegin(window: Meta.Window, grabOp: number) {
+    private _onWindowGrabBegin(window: Meta.Window) {
         if (this._isGrabbingWindow) return;
 
         TouchPointer.get().updateWindowPosition(window.get_frame_rect());
@@ -578,10 +578,10 @@ export class TilingManager {
         this._movingWindowTimerId = GLib.timeout_add(
             GLib.PRIORITY_DEFAULT_IDLE,
             this._movingWindowTimerDuration,
-            this._onMovingWindow.bind(this, window, grabOp),
+            this._onMovingWindow.bind(this, window),
         );
 
-        this._onMovingWindow(window, grabOp);
+        this._onMovingWindow(window);
     }
 
     private _anyActivationKeyIsRmb(): boolean {
@@ -612,19 +612,8 @@ export class TilingManager {
     private _installRmbFilterIfNeeded(): void {
         if (this._rmbFilterInstalled) return;
         if (!this._anyActivationKeyIsRmb()) return;
-        // `Clutter.event_add_filter` / `event_remove_filter` are not always
-        // present in @girs/clutter type stubs. Cast to `any` to access them
-        // and runtime-check for availability below.
-        const addFilter = (Clutter as any).event_add_filter;
-        if (typeof addFilter !== 'function') {
-            console.error(
-                'tilingshell: Clutter.event_add_filter unavailable; ' +
-                'RIGHT_BUTTON activation key will not work on this version.',
-            );
-            return;
-        }
         try {
-            this._rmbFilterId = addFilter(
+            this._rmbFilterId = Clutter.event_add_filter(
                 global.stage,
                 this._rmbEventFilter.bind(this),
             );
@@ -644,15 +633,8 @@ export class TilingManager {
 
     private _removeRmbFilterIfInstalled(): void {
         if (!this._rmbFilterInstalled || this._rmbFilterId === 0) return;
-        const removeFilter = (Clutter as any).event_remove_filter;
-        if (typeof removeFilter !== 'function') {
-            // Defensive: should not happen if install succeeded.
-            this._rmbFilterInstalled = false;
-            this._rmbFilterId = 0;
-            return;
-        }
         try {
-            removeFilter(this._rmbFilterId);
+            Clutter.event_remove_filter(this._rmbFilterId);
         } catch (e) {
             console.error('tilingshell: failed to remove RMB filter: ' + e);
         }
@@ -689,7 +671,7 @@ export class TilingManager {
         return (modifier & mask) !== 0;
     }
 
-    private _onMovingWindow(window: Meta.Window, grabOp: number) {
+    private _onMovingWindow(window: Meta.Window) {
         // if the window is no longer grabbed, disable handler
         if (!this._isGrabbingWindow) {
             this._movingWindowTimerId = null;
@@ -746,36 +728,8 @@ export class TilingManager {
                     height: extWin.originalSize.height,
                 });
 
-                // restart grab for GNOME 42
-                const restartGrab =
-                    // @ts-expect-error "grab is available on GNOME 42"
-                    global.display.end_grab_op && global.display.begin_grab_op;
-                if (restartGrab) {
-                    // @ts-expect-error "grab is available on GNOME 42"
-                    global.display.end_grab_op(global.get_current_time());
-                }
-                // if we restarted the grab, we need to force window movement and to
-                // perform user operation
-                this._easeWindowRect(window, newSize, restartGrab, restartGrab);
+                this._easeWindowRect(window, newSize);
                 TouchPointer.get().updateWindowPosition(newSize);
-
-                if (restartGrab) {
-                    // must be done now, before begin_grab_op, because begin_grab_op will trigger
-                    // _onMovingWindow again, so we will go into infinite loop on restoring the window size
-                    extWin.originalSize = undefined;
-                    // @ts-expect-error "grab is available on GNOME 42"
-                    global.display.begin_grab_op(
-                        window,
-                        grabOp,
-                        true, // pointer already grabbed
-                        true, // frame action
-                        -1, // Button
-                        modifier,
-                        global.get_current_time(),
-                        x,
-                        y,
-                    );
-                }
             }
             extWin.originalSize = undefined;
             this._grabStartPosition = null;

@@ -67,19 +67,12 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
             vscrollbar_policy: St.PolicyType.NEVER,
             x_expand: true,
         });
-        // @ts-expect-error "add_actor is valid for GNOME <= 45"
-        if (scrollView.add_actor)
-            // @ts-expect-error "add_actor is valid for GNOME <= 45"
-            scrollView.add_actor(this._layoutsBoxLayout);
-        else scrollView.add_child(this._layoutsBoxLayout);
+        scrollView.add_child(this._layoutsBoxLayout);
         this.contentLayout.add_child(scrollView);
 
         // St.ScrollView scrolls horizontally on LEFT/RIGHT scroll events only,
         // so map mouse wheel scrolling to the horizontal axis
-        const hadjustment: St.Adjustment =
-            scrollView.hadjustment ??
-            // @ts-expect-error "get_hscroll_bar is valid for GNOME < 48"
-            scrollView.get_hscroll_bar().adjustment;
+        const hadjustment: St.Adjustment = scrollView.hadjustment;
         scrollView.connect(
             'scroll-event',
             (_: St.ScrollView, event: Clutter.Event) => {

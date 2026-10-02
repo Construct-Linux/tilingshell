@@ -7,7 +7,6 @@ import MasonryLayoutManager from './masonryLayoutManager';
 import TouchEventHelper from '../../utils/touch';
 
 const MASONRY_LAYOUT_SPACING = 32;
-const SCROLLBARS_SHOW_ANIM_DURATION = 100; // ms
 
 export default class SuggestionsTilePreview extends TilePreview {
     static { registerGObjectClass(this, {
@@ -76,25 +75,8 @@ export default class SuggestionsTilePreview extends TilePreview {
             y_expand: true,
         });
 
-        // @ts-expect-error "add_actor is valid"
-        if (this._scrollView.add_actor)
-            // @ts-expect-error "add_actor is valid"
-            this._scrollView.add_actor(this._container);
-        else this._scrollView.add_child(this._container);
+        this._scrollView.add_child(this._container);
         this.add_child(this._scrollView);
-
-        // From GNOME 48 we don't have get_hscroll_bar() anymore
-        if (
-            // @ts-expect-error "get_hscroll_bar is valid for GNOME < 48"
-            this._scrollView.get_hscroll_bar &&
-            // @ts-expect-error "get_vscroll_bar is valid for GNOME < 48"
-            this._scrollView.get_vscroll_bar
-        ) {
-            // @ts-expect-error "get_hscroll_bar is valid for GNOME < 48"
-            this._scrollView.get_hscroll_bar().opacity = 0;
-            // @ts-expect-error "get_vscroll_bar is valid for GNOME < 48"
-            this._scrollView.get_vscroll_bar().opacity = 0;
-        }
 
         this._touchHelper = new TouchEventHelper();
     }
@@ -149,58 +131,6 @@ export default class SuggestionsTilePreview extends TilePreview {
         this.set_style(`
             background-color: rgba(${backgroundColor.red}, ${backgroundColor.green}, ${backgroundColor.blue}, ${newAlpha / 255}) !important;
         `);
-    }
-
-    private _showScrollBars(): void {
-        if (
-            // @ts-expect-error "get_hscroll_bar is valid for GNOME < 48"
-            this._scrollView.get_hscroll_bar &&
-            // @ts-expect-error "get_vscroll_bar is valid for GNOME < 48"
-            this._scrollView.get_vscroll_bar
-        ) {
-            [
-                // @ts-expect-error "get_hscroll_bar is valid for GNOME < 48"
-                this._scrollView.get_hscroll_bar(),
-                // @ts-expect-error "get_vscroll_bar is valid for GNOME < 48"
-                this._scrollView.get_vscroll_bar(),
-            ].forEach((bar) =>
-                bar?.ease({
-                    opacity: 255,
-                    duration: SCROLLBARS_SHOW_ANIM_DURATION,
-                }),
-            );
-        }
-    }
-
-    private _hideScrollBars(): void {
-        if (
-            // @ts-expect-error "get_hscroll_bar is valid for GNOME < 48"
-            this._scrollView.get_hscroll_bar &&
-            // @ts-expect-error "get_vscroll_bar is valid for GNOME < 48"
-            this._scrollView.get_vscroll_bar
-        ) {
-            [
-                // @ts-expect-error "get_hscroll_bar is valid for GNOME < 48"
-                this._scrollView.get_hscroll_bar(),
-                // @ts-expect-error "get_vscroll_bar is valid for GNOME < 48"
-                this._scrollView.get_vscroll_bar(),
-            ].forEach((bar) =>
-                bar?.ease({
-                    opacity: 0,
-                    duration: SCROLLBARS_SHOW_ANIM_DURATION,
-                }),
-            );
-        }
-    }
-
-    vfunc_enter_event(event: Clutter.Event) {
-        this._showScrollBars();
-        return super.vfunc_enter_event(event);
-    }
-
-    vfunc_leave_event(event: Clutter.Event) {
-        this._hideScrollBars();
-        return super.vfunc_leave_event(event);
     }
 
     public addWindows(windows: Clutter.Actor[], maxRowHeight: number) {
