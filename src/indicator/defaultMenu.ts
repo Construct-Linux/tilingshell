@@ -18,7 +18,6 @@ import { registerGObjectClass } from '../utils/gjs';
 import { Monitor } from 'resource:///org/gnome/shell/ui/layout.js';
 import Layout from '../components/layout/Layout';
 import { _ } from '../translations';
-import { widgetOrientation } from '../utils/gnomesupport';
 import { createButton, createIconButton } from './utils';
 
 const debug = logger('DefaultMenu');
@@ -51,7 +50,7 @@ class LayoutsRow extends St.BoxLayout {
             xExpand: true,
             yExpand: true,
             style: 'spacing: 8px',
-            ...widgetOrientation(true),
+            orientation: Clutter.Orientation.VERTICAL,
         });
         this._layoutsBox = new St.BoxLayout({
             xAlign: Clutter.ActorAlign.CENTER,
@@ -170,7 +169,7 @@ export default class DefaultMenu implements CurrentMenu {
             xExpand: true,
             yExpand: true,
             styleClass: 'default-menu-container',
-            ...widgetOrientation(true),
+            orientation: Clutter.Orientation.VERTICAL,
         });
         layoutsPopupMenu.add_child(this._container);
         (this._indicator.menu as PopupMenu.PopupMenu).addMenuItem(

@@ -17,7 +17,6 @@ import EditableTilePreview from './editableTilePreview';
 import Tile from '../layout/Tile';
 import HoverLine from './hoverLine';
 import { Monitor } from 'resource:///org/gnome/shell/ui/layout.js';
-import { getEventCoords } from '../../utils/gnomesupport';
 
 export default class LayoutEditor extends St.Widget {
     static { registerGObjectClass(this) }
@@ -197,7 +196,7 @@ export default class LayoutEditor extends St.Widget {
             else if (clicked_button === 3) this.deleteTile(editableTile);
         });
         editableTile.connect('motion-event', (_, event: Clutter.Event) => {
-            const [stageX, stageY] = getEventCoords(event);
+            const [stageX, stageY] = event.get_coords();
             this._hoverWidget.handleMouseMove(
                 editableTile,
                 stageX - this.x,

@@ -1,5 +1,4 @@
 import { Clutter, St } from '../gi/ext';
-import { getEventCoords } from './gnomesupport';
 
 export default class TouchEventHelper {
     private readonly TOUCH_SCROLL_THRESHOLD = 10;
@@ -15,7 +14,7 @@ export default class TouchEventHelper {
         if (!scrollView.vadjustment) return Clutter.EVENT_PROPAGATE;
 
         const eventType = event.type();
-        const [, y] = getEventCoords(event);
+        const [, y] = event.get_coords();
 
         switch (eventType) {
             case Clutter.EventType.TOUCH_BEGIN:

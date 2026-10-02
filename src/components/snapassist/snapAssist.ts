@@ -8,11 +8,11 @@ import Settings from '../../settings/settings';
 import GlobalState from '../../utils/globalState';
 import SignalHandling from '../../utils/signalHandling';
 import {
+    buildBlurEffect,
     buildMarginOf,
     enableScalingFactorSupport,
     getScalingFactorOf,
 } from '../../utils/ui';
-import { buildBlurEffect } from '../../utils/gnomesupport';
 
 export const SNAP_ASSIST_SIGNAL = 'snap-assist';
 
@@ -150,7 +150,7 @@ class SnapAssistContent extends St.BoxLayout {
     _init() {
         super._init();
 
-        const effect = buildBlurEffect(36);
+        const effect = buildBlurEffect(72);
         effect.set_name('blur');
         effect.set_enabled(this._blur);
         this.add_effect(effect);

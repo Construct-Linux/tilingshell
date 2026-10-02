@@ -1,8 +1,8 @@
 import { registerGObjectClass } from '../../utils/gjs';
 import { GObject, St, Clutter, Gio, Mtk } from '../../gi/ext';
+import { buildBlurEffect } from '../../utils/ui';
 import TilePreview from './tilePreview';
 import Settings from '../../settings/settings';
-import { buildBlurEffect } from '../../utils/gnomesupport';
 import Tile from '../../components/layout/Tile';
 
 export default class SelectionTilePreview extends TilePreview {
@@ -67,7 +67,7 @@ export default class SelectionTilePreview extends TilePreview {
     _init() {
         super._init();
 
-        const effect = buildBlurEffect(48);
+        const effect = buildBlurEffect(96);
         effect.set_name('blur');
         effect.set_enabled(this._blur);
         this.add_effect(effect);

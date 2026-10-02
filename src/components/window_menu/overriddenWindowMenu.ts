@@ -18,7 +18,6 @@ import LayoutTileButtons from './layoutTileButtons';
 import { buildMarginOf } from '../../utils/ui';
 import LayoutIcon from './layoutIcon';
 import { _ } from '../../translations';
-import { widgetOrientation } from '../../utils/gnomesupport';
 
 const LAYOUT_ICON_WIDTH = 46;
 const LAYOUT_ICON_HEIGHT = 32;
@@ -238,7 +237,7 @@ export default class OverriddenWindowMenu extends GObject.Object {
             xExpand: true,
             yExpand: true,
             style: 'spacing: 16px !important',
-            ...widgetOrientation(true),
+            orientation: Clutter.Orientation.VERTICAL,
         });
         layoutsPopupMenu.add_child(container);
         const layoutsPerRow = 4;

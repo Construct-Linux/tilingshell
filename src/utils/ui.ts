@@ -1,7 +1,15 @@
-import { St, Meta, Mtk, Clutter, Gio, GLib } from '../gi/ext';
+import { St, Meta, Mtk, Clutter, Gio, GLib, Shell } from '../gi/ext';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { Monitor } from 'resource:///org/gnome/shell/ui/layout.js';
 import * as Config from 'resource:///org/gnome/shell/misc/config.js';
+
+export function buildBlurEffect(radius: number): Shell.BlurEffect {
+    const effect = new Shell.BlurEffect();
+    effect.set_mode(Shell.BlurMode.BACKGROUND); // blur what is behind the widget
+    effect.set_brightness(1);
+    effect.set_radius(radius);
+    return effect;
+}
 
 export const getMonitors = (): Monitor[] => Main.layoutManager.monitors;
 

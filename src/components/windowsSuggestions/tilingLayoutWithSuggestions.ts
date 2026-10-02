@@ -11,7 +11,6 @@ import LayoutWidget from '../../components/layout/LayoutWidget';
 import SignalHandling from '../../utils/signalHandling';
 import SuggestionsTilePreview from '../../components/windowsSuggestions/suggestionsTilePreview';
 import TilingShellWindowManager from '../../components/windowManager/tilingShellWindowManager';
-import { getEventCoords, unmaximizeWindow } from '../../utils/gnomesupport';
 import TouchEventHelper from '../../utils/touch';
 
 const ANIMATION_SPEED = 200;
@@ -303,7 +302,7 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
         monitorIndex: number,
         preview: SuggestionsTilePreview,
     ): boolean {
-        const [eventX, eventY] = getEventCoords(event);
+        const [eventX, eventY] = event.get_coords();
         const cl = suggestedWin.get_window_clone() ?? suggestedWin;
         const [x, y] = cl.get_transformed_position();
         const allocation = cl.get_allocation_box();
@@ -325,7 +324,7 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
             nonTiledWin.maximizedHorizontally ||
             nonTiledWin.maximizedVertically
         )
-            unmaximizeWindow(nonTiledWin);
+            nonTiledWin.unmaximize();
 
         if (nonTiledWin.is_fullscreen()) nonTiledWin.unmake_fullscreen();
         if (nonTiledWin.minimized) nonTiledWin.unminimize();

@@ -48,7 +48,6 @@ import TilingShellWindowManager from './components/windowManager/tilingShellWind
 import ExtendedWindow from './components/tilingsystem/extendedWindow';
 import OverriddenAltTab from './components/altTab/overriddenAltTab';
 import { LayoutSwitcherPopup } from './components/layoutSwitcher/layoutSwitcher';
-import { unmaximizeWindow } from './utils/gnomesupport';
 import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 import { RaiseTogetherManager } from './components/raiseTogether/raiseTogetherManager';
 
@@ -533,7 +532,7 @@ export default class TilingShellExtension extends Extension {
                 focus_window.maximizedVertically) &&
             direction === KeyBindingsDirection.DOWN
         ) {
-            unmaximizeWindow(focus_window);
+            focus_window.unmaximize();
             return;
         }
 
@@ -546,7 +545,7 @@ export default class TilingShellExtension extends Extension {
             (focus_window.maximizedHorizontally ||
                 focus_window.maximizedVertically)
         ) {
-            unmaximizeWindow(focus_window);
+            focus_window.unmaximize();
             return;
         }
 
@@ -589,7 +588,7 @@ export default class TilingShellExtension extends Extension {
             direction === KeyBindingsDirection.UP
         ) {
             Main.wm.skipNextEffect(focus_window.get_compositor_private());
-            unmaximizeWindow(focus_window);
+            focus_window.unmaximize();
             (focus_window as ExtendedWindow).assignedTile = undefined;
         }
 
@@ -744,7 +743,7 @@ export default class TilingShellExtension extends Extension {
             focus_window.maximizedHorizontally ||
             focus_window.maximizedVertically
         )
-            unmaximizeWindow(focus_window);
+            focus_window.unmaximize();
 
         const monitorTilingManager =
             this._tilingManagers[focus_window.get_monitor()];
@@ -767,7 +766,7 @@ export default class TilingShellExtension extends Extension {
                     extWin.maximizedHorizontally ||
                     extWin.maximizedVertically
                 )
-                    unmaximizeWindow(extWin);
+                    extWin.unmaximize();
                 const monitorTilingManager =
                     this._tilingManagers[extWin.get_monitor()];
                 if (!monitorTilingManager) return;

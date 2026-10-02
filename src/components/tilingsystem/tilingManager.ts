@@ -29,7 +29,6 @@ import TouchPointer from './touchPointer';
 import { KeyBindingsDirection } from '../../keybindings';
 import TilingShellWindowManager from '../../components/windowManager/tilingShellWindowManager';
 import TilingLayoutWithSuggestions from '../windowsSuggestions/tilingLayoutWithSuggestions';
-import { maximizeWindow, unmaximizeWindow } from '../../utils/gnomesupport';
 
 const MINIMUM_DISTANCE_TO_RESTORE_ORIGINAL_SIZE = 90;
 
@@ -369,7 +368,7 @@ export class TilingManager {
                 case KeyBindingsDirection.RIGHT:
                     break;
                 case KeyBindingsDirection.DOWN:
-                    unmaximizeWindow(window);
+                    window.unmaximize();
                     return true;
                 case KeyBindingsDirection.UP:
                     return false;
@@ -382,7 +381,7 @@ export class TilingManager {
             extWin.assignedTile &&
             extWin.assignedTile?.y === 0
         ) {
-            maximizeWindow(window);
+            window.maximize();
             return true;
         }
 
@@ -448,7 +447,7 @@ export class TilingManager {
                 direction === KeyBindingsDirection.UP &&
                 window.can_maximize()
             ) {
-                maximizeWindow(window);
+                window.maximize();
                 return true;
             }
             return false;
@@ -465,7 +464,7 @@ export class TilingManager {
             );
         }
 
-        if (isMaximized) unmaximizeWindow(window);
+        if (isMaximized) window.unmaximize();
 
         this._easeWindowRect(window, destination.rect, false, force);
 
@@ -948,7 +947,7 @@ export class TilingManager {
             this._edgeTilingManager.needMaximize() &&
             window.can_maximize()
         )
-            maximizeWindow(window);
+            window.maximize();
 
         // disable edge-tiling
         const wasEdgeTiling = this._edgeTilingManager.isPerformingEdgeTiling();
@@ -1317,7 +1316,7 @@ export class TilingManager {
         const isMaximized =
             window.maximizedHorizontally || window.maximizedVertically;
         const rememberOriginalSize = !isMaximized;
-        if (isMaximized) unmaximizeWindow(window);
+        if (isMaximized) window.unmaximize();
 
         if (rememberOriginalSize && !(window as ExtendedWindow).assignedTile) {
             (window as ExtendedWindow).originalSize = window

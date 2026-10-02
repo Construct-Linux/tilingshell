@@ -2,7 +2,6 @@ import { registerGObjectClass } from '../../utils/gjs';
 import { GObject, St, Clutter, Mtk, Meta } from '../../gi/ext';
 import EditableTilePreview from './editableTilePreview';
 import { getScalingFactorOf } from '../../utils/ui';
-import { getEventCoords } from '../../utils/gnomesupport';
 
 export default class Slider extends St.Button {
     static { registerGObjectClass(this, {
@@ -301,7 +300,7 @@ export default class Slider extends St.Button {
         return true;
     }
 
-    vfunc_button_press_event(event: Clutter.ButtonEvent) {
+    vfunc_button_press_event(event: Clutter.Event) {
         return this._startDragging(event);
     }
 
@@ -311,9 +310,9 @@ export default class Slider extends St.Button {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    vfunc_motion_event(event: Clutter.MotionEvent) {
+    vfunc_motion_event(event: Clutter.Event) {
         if (this._dragging) {
-            const [stageX, stageY] = getEventCoords(event);
+            const [stageX, stageY] = event.get_coords();
             this._move(stageX, stageY);
             return Clutter.EVENT_STOP;
         }
@@ -321,7 +320,7 @@ export default class Slider extends St.Button {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    private _startDragging(event: Clutter.ButtonEvent) {
+    private _startDragging(event: Clutter.Event) {
         if (this._dragging) return Clutter.EVENT_PROPAGATE;
 
         this._dragging = true;
@@ -329,7 +328,7 @@ export default class Slider extends St.Button {
 
         this._grab = global.stage.grab(this);
 
-        const [stageX, stageY] = getEventCoords(event);
+        const [stageX, stageY] = event.get_coords();
         this._move(stageX, stageY);
         return Clutter.EVENT_STOP;
     }

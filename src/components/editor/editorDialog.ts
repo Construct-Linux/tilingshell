@@ -13,7 +13,6 @@ import {
     getMonitorScalingFactor,
 } from '../../utils/ui';
 import { _ } from '../../translations';
-import { widgetOrientation } from '../../utils/gnomesupport';
 
 export default class EditorDialog extends ModalDialog.ModalDialog {
     static { registerGObjectClass(this) }
@@ -246,7 +245,7 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
 
         const legend = new St.BoxLayout({
             styleClass: 'legend',
-            ...widgetOrientation(true),
+            orientation: Clutter.Orientation.VERTICAL,
         });
         legend.add_child(suggestion1);
         legend.add_child(suggestion2);
@@ -289,7 +288,7 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
             const layoutBox = new St.BoxLayout({
                 xAlign: Clutter.ActorAlign.CENTER,
                 styleClass: 'layout-button-container',
-                ...widgetOrientation(true),
+                orientation: Clutter.Orientation.VERTICAL,
             });
             this._layoutsBoxLayout.add_child(layoutBox);
             const btn = new LayoutButton(
@@ -302,7 +301,7 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
             const moveAndDeleteButtonsBox = new St.BoxLayout({
                 xAlign: Clutter.ActorAlign.CENTER,
                 //styleClass: 'layout-button-container',
-                ...widgetOrientation(false),
+                orientation: Clutter.Orientation.HORIZONTAL,
             });
             layoutBox.add_child(moveAndDeleteButtonsBox);
             if (params.layouts.length > 1) {
@@ -387,7 +386,7 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
         const box = new St.BoxLayout({
             xAlign: Clutter.ActorAlign.CENTER,
             styleClass: 'layout-button-container',
-            ...widgetOrientation(true),
+            orientation: Clutter.Orientation.VERTICAL,
         });
         this._layoutsBoxLayout.add_child(box);
         const newLayoutBtn = new LayoutButton(

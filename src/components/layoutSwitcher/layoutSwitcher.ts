@@ -10,7 +10,6 @@ import {
 import * as SwitcherPopup from 'resource:///org/gnome/shell/ui/switcherPopup.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { registerGObjectClass } from '../../utils/gjs';
-import { widgetOrientation } from '../../utils/gnomesupport';
 
 const LAYOUT_HEIGHT: number = 72;
 const LAYOUT_WIDTH: number = 128; // 16:9 ratio. -> (16*layoutHeight) / 9 and then rounded to int
@@ -48,7 +47,7 @@ class LayoutSwitcherList extends SwitcherPopup.SwitcherList {
     _addLayoutItem(layout: Layout) {
         const box = new St.BoxLayout({
             style_class: 'alt-tab-app',
-            ...widgetOrientation(true),
+            orientation: Clutter.Orientation.VERTICAL,
         });
         // @ts-expect-error "addItem can take a St.Widget"
         this.addItem(box, new St.Widget());

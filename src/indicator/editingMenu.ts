@@ -1,10 +1,9 @@
-import { St } from '../gi/ext';
+import { St, Clutter } from '../gi/ext';
 import Indicator from './indicator';
 import { createButton } from './utils';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import CurrentMenu from './currentMenu';
 import { _ } from '../translations';
-import { widgetOrientation } from '../utils/gnomesupport';
 
 export default class EditingMenu implements CurrentMenu {
     private readonly _indicator: Indicator;
@@ -16,7 +15,7 @@ export default class EditingMenu implements CurrentMenu {
             styleClass: 'buttons-box-layout',
             xExpand: true,
             style: 'spacing: 8px',
-            ...widgetOrientation(true),
+            orientation: Clutter.Orientation.VERTICAL,
         });
 
         const openMenuBtn = createButton(

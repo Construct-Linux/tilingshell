@@ -1,7 +1,7 @@
 import { registerGObjectClass } from '../../utils/gjs';
 import { GObject, St, Clutter, Mtk } from '../../gi/ext';
+import { buildBlurEffect } from '../../utils/ui';
 import TilePreview from '../tilepreview/tilePreview';
-import { buildBlurEffect, widgetOrientation } from '../../utils/gnomesupport';
 import Tile from '../../components/layout/Tile';
 import MasonryLayoutManager from './masonryLayoutManager';
 import TouchEventHelper from '../../utils/touch';
@@ -64,7 +64,7 @@ export default class SuggestionsTilePreview extends TilePreview {
             x_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
             style: `spacing: ${MASONRY_LAYOUT_SPACING}px;`,
-            ...widgetOrientation(true),
+            orientation: Clutter.Orientation.VERTICAL,
         });
         this._scrollView = new St.ScrollView({
             style_class: 'vfade',
@@ -124,7 +124,7 @@ export default class SuggestionsTilePreview extends TilePreview {
     _init() {
         super._init();
 
-        const effect = buildBlurEffect(48);
+        const effect = buildBlurEffect(96);
         effect.set_name('blur');
         effect.set_enabled(this._blur);
         this.add_effect(effect);
