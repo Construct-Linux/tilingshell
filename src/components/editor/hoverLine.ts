@@ -1,11 +1,12 @@
 import { registerGObjectClass } from '../../utils/gjs';
-import { GLib, St, Clutter, Shell } from '../../gi/ext';
+import { St, Clutter } from '../../gi/ext';
 import EditableTilePreview from './editableTilePreview';
 
 export default class HoverLine extends St.Widget {
     static { registerGObjectClass(this) }
     
-    private readonly _hoverTimer: number;
+    private readonly _keymap: Clutter.Keymap;
+    private readonly _keymapStateId: number;
     private readonly _size: number;
 
     private _hoveredTile: EditableTilePreview | null;
@@ -20,10 +21,15 @@ export default class HoverLine extends St.Widget {
 
         this.hide();
 
-        this._hoverTimer = GLib.timeout_add(
-            GLib.PRIORITY_DEFAULT_IDLE,
-            100,
-            this._handleModifierChange.bind(this),
+        // Ctrl flips the split direction while the pointer stands still;
+        // the keymap emits state-changed on every modifier change
+        this._keymap = global.stage
+            .get_context()
+            .get_backend()
+            .get_default_seat()
+            .get_keymap();
+        this._keymapStateId = this._keymap.connect('state-changed', () =>
+            this._handleModifierChange(),
         );
 
         this.connect('destroy', this._onDestroy.bind(this));
@@ -38,8 +44,12 @@ export default class HoverLine extends St.Widget {
 
     public handleMouseMove(tile: EditableTilePreview, x: number, y: number) {
         this._hoveredTile = tile;
+        if (!tile.hover) {
+            this.hide();
+            return;
+        }
 
-        const modifier = Shell.Global.get().get_pointer()[2];
+        const modifier = global.get_pointer()[2];
 
         // split horizontally when CTRL is NOT pressed, split vertically instead
         const splitHorizontally =
@@ -47,14 +57,8 @@ export default class HoverLine extends St.Widget {
         this._drawLine(splitHorizontally, x, y);
     }
 
-    private _handleModifierChange(): boolean {
-        if (!this._hoveredTile) return GLib.SOURCE_CONTINUE;
-
-        // if the button is not hovered, remove this timer
-        if (!this._hoveredTile.hover) {
-            this.hide();
-            return GLib.SOURCE_CONTINUE;
-        }
+    private _handleModifierChange() {
+        if (!this._hoveredTile?.hover) return;
 
         const [x, y, modifier] = global.get_pointer();
         // split horizontally when CTRL is NOT pressed, split vertically instead
@@ -66,8 +70,6 @@ export default class HoverLine extends St.Widget {
             x - (this.get_parent()?.x || 0),
             y - (this.get_parent()?.y || 0),
         );
-
-        return GLib.SOURCE_CONTINUE;
     }
 
     private _drawLine(splitHorizontally: boolean, x: number, y: number) {
@@ -101,7 +103,7 @@ export default class HoverLine extends St.Widget {
     }
 
     private _onDestroy() {
-        GLib.Source.remove(this._hoverTimer);
+        this._keymap.disconnect(this._keymapStateId);
         this._hoveredTile = null;
     }
 }
