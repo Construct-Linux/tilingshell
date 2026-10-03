@@ -11,7 +11,7 @@ $snap-assist-tile-border-radius: 6px;
 }
 
 .snap-assist-tile {
-    transition: 300ms ease all;
+    transition-duration: 300ms;
     border-radius-value: $snap-assist-tile-border-radius;
     border-width-value: $snap-assist-tile-border-width;
     border-style: solid;

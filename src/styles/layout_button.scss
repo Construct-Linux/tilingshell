@@ -6,7 +6,7 @@
 }
 
 .layout-button {
-    transition: 100ms ease all;
+    transition-duration: 100ms;
     padding: calc(constants.$base_padding / 2);
     border-radius: snap_assist.$snap-assist-tile-border-radius;
     border-width: snap_assist.$snap-assist-tile-border-width;
