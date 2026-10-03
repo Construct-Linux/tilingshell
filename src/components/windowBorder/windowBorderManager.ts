@@ -46,8 +46,10 @@ export class WindowBorderManager {
             Settings.KEY_WINDOW_USE_CUSTOM_BORDER_COLOR,
             () => this._border?.updateStyle(),
         );
-        this._interfaceSettings.connect('changed::accent-color', () =>
-            this._border?.updateStyle(),
+        this._signals.connect(
+            this._interfaceSettings,
+            'changed::accent-color',
+            () => this._border?.updateStyle(),
         );
         this._signals.connect(Settings, Settings.KEY_WINDOW_BORDER_WIDTH, () =>
             this._border?.updateStyle(),
