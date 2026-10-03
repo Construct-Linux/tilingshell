@@ -83,7 +83,6 @@ export default class Settings {
     static _settings: Gio.Settings | null;
     static _is_initialized: boolean = false;
 
-    static KEY_LAST_VERSION_NAME_INSTALLED = 'last-version-name-installed';
     static KEY_OVERRIDDEN_SETTINGS = 'overridden-settings';
     static KEY_WINDOW_BORDER_COLOR = 'window-border-color';
     static KEY_WINDOW_USE_CUSTOM_BORDER_COLOR = 'window-use-custom-border-color';
@@ -175,14 +174,6 @@ export default class Settings {
         flags: Gio.SettingsBindFlags = Gio.SettingsBindFlags.DEFAULT,
     ): void {
         this._settings?.bind(key, object, property, flags);
-    }
-
-    static get LAST_VERSION_NAME_INSTALLED(): string {
-        return get_string(Settings.KEY_LAST_VERSION_NAME_INSTALLED);
-    }
-
-    static set LAST_VERSION_NAME_INSTALLED(val: string) {
-        set_string(Settings.KEY_LAST_VERSION_NAME_INSTALLED, val);
     }
 
     static get OVERRIDDEN_SETTINGS(): string {
