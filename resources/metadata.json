@@ -11,11 +11,7 @@
   ],
   "version": 99,
   "version-name": "18.0",
-  "url": "https://github.com/domferr/tilingshell",
+  "url": "https://github.com/Construct-Linux/tilingshell",
   "settings-schema": "org.gnome.shell.extensions.tilingshell",
-  "gettext-domain": "tilingshell",
-  "donations": {
-    "kofi": "domferr",
-    "patreon": "domferr"
-  }
+  "gettext-domain": "tilingshell"
 }
