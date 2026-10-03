@@ -1,5 +1,5 @@
-import Settings from '../settings/settings';
-import { Gio, GLib } from '../gi/shared';
+import Settings from '../settings/settings.js';
+import { Gio, GLib } from '../gi/shared.js';
 
 // the overrides are applied on every enable() and restored on disable():
 // skip the dconf write when the key already holds the value

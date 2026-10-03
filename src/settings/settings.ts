@@ -1,6 +1,6 @@
-import { Gio, GObject, GLib } from '../gi/shared';
-import Layout from '../components/layout/Layout';
-import Tile from '../components/layout/Tile';
+import { Gio, GObject, GLib } from '../gi/shared.js';
+import Layout from '../components/layout/Layout.js';
+import Tile from '../components/layout/Tile.js';
 
 export enum ActivationKey {
     NONE = -1,

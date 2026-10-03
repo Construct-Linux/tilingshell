@@ -1,4 +1,4 @@
-import { Gio, GLib, GObject } from './shared';
+import { Gio, GLib, GObject } from './shared.js';
 import Clutter from 'gi://Clutter';
 import Meta from 'gi://Meta';
 import Mtk from 'gi://Mtk';

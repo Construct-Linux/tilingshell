@@ -1,9 +1,9 @@
 import * as AltTab from 'resource:///org/gnome/shell/ui/altTab.js';
-import { St, Meta, Clutter } from '../../gi/ext';
-import ExtendedWindow from '../../components/tilingsystem/extendedWindow';
-import MultipleWindowsIcon from './MultipleWindowsIcon';
-import { buildMargin, getWindows } from '../../utils/ui';
-import Settings from '../../settings/settings';
+import { St, Meta, Clutter } from '../../gi/ext.js';
+import ExtendedWindow from '../../components/tilingsystem/extendedWindow.js';
+import MultipleWindowsIcon from './MultipleWindowsIcon.js';
+import { buildMargin, getWindows } from '../../utils/ui.js';
+import Settings from '../../settings/settings.js';
 
 const GAPS = 3;
 

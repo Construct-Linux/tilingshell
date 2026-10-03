@@ -1,7 +1,7 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import TilePreview from '../tilepreview/tilePreview';
-import Tile from '../layout/Tile';
-import { St, Clutter, Mtk } from '../../gi/ext';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import TilePreview from '../tilepreview/tilePreview.js';
+import Tile from '../layout/Tile.js';
+import { St, Clutter, Mtk } from '../../gi/ext.js';
 
 const MIN_RADIUS = 2;
 

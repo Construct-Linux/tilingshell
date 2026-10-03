@@ -1,8 +1,8 @@
-import { St, Clutter, Mtk, Meta } from '../../gi/ext';
-import { buildRectangle } from '../../utils/ui';
-import GlobalState from '../../utils/globalState';
-import Tile from '../../components/layout/Tile';
-import { registerGObjectClass } from '../../utils/gjs';
+import { St, Clutter, Mtk, Meta } from '../../gi/ext.js';
+import { buildRectangle } from '../../utils/ui.js';
+import GlobalState from '../../utils/globalState.js';
+import Tile from '../../components/layout/Tile.js';
+import { registerGObjectClass } from '../../utils/gjs.js';
 
 export interface TilePreviewConstructorProperties
     extends St.Widget.ConstructorProps {

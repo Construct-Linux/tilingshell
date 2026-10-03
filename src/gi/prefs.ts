@@ -1,4 +1,4 @@
-import { Gio, GLib, GObject } from './shared';
+import { Gio, GLib, GObject } from './shared.js';
 import Gdk from 'gi://Gdk';
 import Gtk from 'gi://Gtk'; // Starting from GNOME 40, the preferences dialog uses GTK4
 import Adw from 'gi://Adw';

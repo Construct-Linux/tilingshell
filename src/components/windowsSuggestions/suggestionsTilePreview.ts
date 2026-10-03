@@ -1,8 +1,8 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import { St, Clutter, Mtk } from '../../gi/ext';
-import TilePreview from '../tilepreview/tilePreview';
-import Tile from '../../components/layout/Tile';
-import MasonryLayoutManager from './masonryLayoutManager';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { St, Clutter, Mtk } from '../../gi/ext.js';
+import TilePreview from '../tilepreview/tilePreview.js';
+import Tile from '../../components/layout/Tile.js';
+import MasonryLayoutManager from './masonryLayoutManager.js';
 
 const MASONRY_LAYOUT_SPACING = 32;
 

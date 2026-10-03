@@ -1,8 +1,8 @@
-import { GObject, Meta, St, Clutter, Shell, Gio, GLib } from '../../gi/ext';
-import SignalHandling from '../../utils/signalHandling';
-import { registerGObjectClass } from '../../utils/gjs';
-import Settings from '../../settings/settings';
-import { buildRectangle } from '../../utils/ui';
+import { GObject, Meta, St, Clutter, Shell, Gio, GLib } from '../../gi/ext.js';
+import SignalHandling from '../../utils/signalHandling.js';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import Settings from '../../settings/settings.js';
+import { buildRectangle } from '../../utils/ui.js';
 
 Gio._promisify(Shell.Screenshot, 'composite_to_stream');
 

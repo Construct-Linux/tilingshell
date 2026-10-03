@@ -1,6 +1,6 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import SignalHandling from '../../utils/signalHandling';
-import { GObject, Meta, Mtk, Clutter, Graphene } from '../../gi/ext';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import SignalHandling from '../../utils/signalHandling.js';
+import { GObject, Meta, Mtk, Clutter, Graphene } from '../../gi/ext.js';
 
 class CachedWindowProperties {
     private _is_initialized: boolean = false;

@@ -1,13 +1,13 @@
-import Settings from '../../settings/settings';
-import { registerGObjectClass } from '../../utils/gjs';
-import { St, Clutter, Gio } from '../../gi/ext';
-import LayoutButton from '../../indicator/layoutButton';
-import GlobalState from '../../utils/globalState';
-import Layout from '../../components/layout/Layout';
+import Settings from '../../settings/settings.js';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { St, Clutter, Gio } from '../../gi/ext.js';
+import LayoutButton from '../../indicator/layoutButton.js';
+import GlobalState from '../../utils/globalState.js';
+import Layout from '../../components/layout/Layout.js';
 
-import Tile from '../../components/layout/Tile';
+import Tile from '../../components/layout/Tile.js';
 import * as ModalDialog from 'resource:///org/gnome/shell/ui/modalDialog.js';
-import { _ } from '../../translations';
+import { _ } from '../../translations.js';
 
 export default class EditorDialog extends ModalDialog.ModalDialog {
     static { registerGObjectClass(this) }

@@ -1,5 +1,5 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import { Clutter } from '../../gi/ext';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { Clutter } from '../../gi/ext.js';
 
 const MASONRY_ROW_MIN_HEIGHT_PERCENTAGE = 0.15;
 

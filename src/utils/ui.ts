@@ -1,4 +1,4 @@
-import { Meta, Mtk, Clutter, Shell } from '../gi/ext';
+import { Meta, Mtk, Clutter, Shell } from '../gi/ext.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { Monitor } from 'resource:///org/gnome/shell/ui/layout.js';
 

@@ -1,5 +1,5 @@
-import Tile from '../../components/layout/Tile';
-import { Mtk, Meta } from '../../gi/ext';
+import Tile from '../../components/layout/Tile.js';
+import { Mtk, Meta } from '../../gi/ext.js';
 
 interface ExtendedWindow extends Meta.Window {
     originalSize: Mtk.Rectangle | undefined;

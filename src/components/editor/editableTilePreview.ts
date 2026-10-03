@@ -1,10 +1,10 @@
-import TilePreview from '../tilepreview/tilePreview';
-import { St, Clutter, Mtk } from '../../gi/ext';
-import Tile from '../layout/Tile';
-import Slider from './slider';
-import TileUtils from '../layout/TileUtils';
-import { registerGObjectClass } from '../../utils/gjs';
-import { buildTileGaps } from '../../utils/ui';
+import TilePreview from '../tilepreview/tilePreview.js';
+import { St, Clutter, Mtk } from '../../gi/ext.js';
+import Tile from '../layout/Tile.js';
+import Slider from './slider.js';
+import TileUtils from '../layout/TileUtils.js';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { buildTileGaps } from '../../utils/ui.js';
 
 export default class EditableTilePreview extends TilePreview {
     static { registerGObjectClass(this, {

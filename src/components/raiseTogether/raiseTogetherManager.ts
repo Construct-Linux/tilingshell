@@ -1,8 +1,8 @@
-import { Meta } from '../../gi/ext';
-import SignalHandling from '../../utils/signalHandling';
-import Settings from '../../settings/settings';
-import { getWindows } from '../../utils/ui';
-import ExtendedWindow from '../tilingsystem/extendedWindow';
+import { Meta } from '../../gi/ext.js';
+import SignalHandling from '../../utils/signalHandling.js';
+import Settings from '../../settings/settings.js';
+import { getWindows } from '../../utils/ui.js';
+import ExtendedWindow from '../tilingsystem/extendedWindow.js';
 
 export class RaiseTogetherManager {
     private readonly _signals: SignalHandling;

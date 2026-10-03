@@ -1,10 +1,10 @@
-import Layout from '../../components/layout/Layout';
-import LayoutWidget from '../../components/layout/LayoutWidget';
-import Tile from '../../components/layout/Tile';
-import SnapAssistTile from '../../components/snapassist/snapAssistTile';
-import { registerGObjectClass } from '../../utils/gjs';
-import { buildRectangle } from '../../utils/ui';
-import { Clutter, Mtk } from '../../gi/ext';
+import Layout from '../../components/layout/Layout.js';
+import LayoutWidget from '../../components/layout/LayoutWidget.js';
+import Tile from '../../components/layout/Tile.js';
+import SnapAssistTile from '../../components/snapassist/snapAssistTile.js';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { buildRectangle } from '../../utils/ui.js';
+import { Clutter, Mtk } from '../../gi/ext.js';
 
 export default class LayoutIcon extends LayoutWidget<SnapAssistTile> {
     static { registerGObjectClass(this) }

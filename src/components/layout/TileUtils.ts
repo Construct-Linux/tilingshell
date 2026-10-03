@@ -1,6 +1,6 @@
-import { Mtk } from '../../gi/ext';
-import Tile from './Tile';
-import { buildRectangle } from '../../utils/ui';
+import { Mtk } from '../../gi/ext.js';
+import Tile from './Tile.js';
+import { buildRectangle } from '../../utils/ui.js';
 
 export default class TileUtils {
     static apply_props(tile: Tile, container: Mtk.Rectangle): Mtk.Rectangle {

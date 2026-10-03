@@ -1,4 +1,4 @@
-import { Meta } from '../../gi/ext';
+import { Meta } from '../../gi/ext.js';
 
 /**
  * Represents a group of windows and allows executing methods on all of them simultaneously.

@@ -19,13 +19,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { Gtk, Adw, Gio, GLib, Gdk, GObject } from './gi/prefs';
-import Settings from './settings/settings';
-import { EdgeTilingMode, ActivationKey } from './settings/settings';
-import { logger } from './utils/logger';
+import { Gtk, Adw, Gio, GLib, Gdk, GObject } from './gi/prefs.js';
+import Settings from './settings/settings.js';
+import { EdgeTilingMode, ActivationKey } from './settings/settings.js';
+import { logger } from './utils/logger.js';
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
-import Layout from './components/layout/Layout';
-import SettingsExport from './settings/settingsExport';
+import Layout from './components/layout/Layout.js';
+import SettingsExport from './settings/settingsExport.js';
 import { gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 const debug = logger('prefs');

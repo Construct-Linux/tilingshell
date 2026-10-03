@@ -1,7 +1,7 @@
-import Tile from '../../components/layout/Tile';
-import { registerGObjectClass } from '../../utils/gjs';
-import { St, Clutter, Mtk } from '../../gi/ext';
-import SnapAssistTile from '../../components/snapassist/snapAssistTile';
+import Tile from '../../components/layout/Tile.js';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { St, Clutter, Mtk } from '../../gi/ext.js';
+import SnapAssistTile from '../../components/snapassist/snapAssistTile.js';
 
 export default class SnapAssistTileButton extends SnapAssistTile {
     static { registerGObjectClass(this) }

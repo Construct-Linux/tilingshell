@@ -1,9 +1,9 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import { GObject, St, Clutter, Gio, Mtk } from '../../gi/ext';
-import { buildBlurEffect } from '../../utils/ui';
-import TilePreview from './tilePreview';
-import Settings from '../../settings/settings';
-import Tile from '../../components/layout/Tile';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { GObject, St, Clutter, Gio, Mtk } from '../../gi/ext.js';
+import { buildBlurEffect } from '../../utils/ui.js';
+import TilePreview from './tilePreview.js';
+import Settings from '../../settings/settings.js';
+import Tile from '../../components/layout/Tile.js';
 
 export default class SelectionTilePreview extends TilePreview {
     static { registerGObjectClass(this, {

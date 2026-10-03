@@ -1,5 +1,5 @@
-import { buildRectangle } from '../../utils/ui';
-import { Mtk, Meta } from '../../gi/ext';
+import { buildRectangle } from '../../utils/ui.js';
+import { Mtk, Meta } from '../../gi/ext.js';
 
 export default class TouchPointer {
     private static _instance: TouchPointer | null = null;

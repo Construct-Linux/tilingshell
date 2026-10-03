@@ -1,6 +1,6 @@
-import { Clutter, Mtk, Meta, GLib } from '../../gi/ext';
+import { Clutter, Mtk, Meta, GLib } from '../../gi/ext.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import { logger } from '../../utils/logger';
+import { logger } from '../../utils/logger.js';
 import {
     buildMargin,
     buildRectangle,
@@ -9,24 +9,24 @@ import {
     isPointInsideRect,
     isTileOnContainerBorder,
     squaredEuclideanDistance,
-} from '../../utils/ui';
-import TilingLayout from '../../components/tilingsystem/tilingLayout';
-import SnapAssist from '../snapassist/snapAssist';
-import SelectionTilePreview from '../tilepreview/selectionTilePreview';
-import { ActivationKey, EdgeTilingMode } from '../../settings/settings';
-import Settings from '../../settings/settings';
-import SignalHandling from '../../utils/signalHandling';
-import Layout from '../layout/Layout';
-import Tile from '../layout/Tile';
-import TileUtils from '../layout/TileUtils';
-import GlobalState from '../../utils/globalState';
+} from '../../utils/ui.js';
+import TilingLayout from '../../components/tilingsystem/tilingLayout.js';
+import SnapAssist from '../snapassist/snapAssist.js';
+import SelectionTilePreview from '../tilepreview/selectionTilePreview.js';
+import { ActivationKey, EdgeTilingMode } from '../../settings/settings.js';
+import Settings from '../../settings/settings.js';
+import SignalHandling from '../../utils/signalHandling.js';
+import Layout from '../layout/Layout.js';
+import Tile from '../layout/Tile.js';
+import TileUtils from '../layout/TileUtils.js';
+import GlobalState from '../../utils/globalState.js';
 import { Monitor } from 'resource:///org/gnome/shell/ui/layout.js';
-import ExtendedWindow from './extendedWindow';
-import EdgeTilingManager from './edgeTilingManager';
-import TouchPointer from './touchPointer';
-import { KeyBindingsDirection } from '../../keybindings';
-import TilingShellWindowManager from '../../components/windowManager/tilingShellWindowManager';
-import TilingLayoutWithSuggestions from '../windowsSuggestions/tilingLayoutWithSuggestions';
+import ExtendedWindow from './extendedWindow.js';
+import EdgeTilingManager from './edgeTilingManager.js';
+import TouchPointer from './touchPointer.js';
+import { KeyBindingsDirection } from '../../keybindings.js';
+import TilingShellWindowManager from '../../components/windowManager/tilingShellWindowManager.js';
+import TilingLayoutWithSuggestions from '../windowsSuggestions/tilingLayoutWithSuggestions.js';
 
 const MINIMUM_DISTANCE_TO_RESTORE_ORIGINAL_SIZE = 90;
 

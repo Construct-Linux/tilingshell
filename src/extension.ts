@@ -21,33 +21,33 @@
  */
 
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
-import { Gio, GLib, Meta } from './gi/ext';
-import { logger } from './utils/logger';
+import { Gio, GLib, Meta } from './gi/ext.js';
+import { logger } from './utils/logger.js';
 import {
     filterUnfocusableWindows,
     getMonitors,
     getWindows,
     squaredEuclideanDistance,
-} from './utils/ui';
+} from './utils/ui.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import { TilingManager } from './components/tilingsystem/tilingManager';
-import Settings from './settings/settings';
-import SignalHandling from './utils/signalHandling';
-import GlobalState from './utils/globalState';
-import Indicator from './indicator/indicator';
-import DBus from './dbus';
-import { KeyBindingsDirection, FocusSwitchDirection } from './keybindings';
-import KeyBindings from './keybindings';
-import SettingsOverride from './settings/settingsOverride';
-import { ResizingManager } from './components/tilingsystem/resizeManager';
-import OverriddenWindowMenu from './components/window_menu/overriddenWindowMenu';
-import Tile from './components/layout/Tile';
-import { WindowBorderManager } from './components/windowBorder/windowBorderManager';
-import TilingShellWindowManager from './components/windowManager/tilingShellWindowManager';
-import ExtendedWindow from './components/tilingsystem/extendedWindow';
-import OverriddenAltTab from './components/altTab/overriddenAltTab';
-import { LayoutSwitcherPopup } from './components/layoutSwitcher/layoutSwitcher';
-import { RaiseTogetherManager } from './components/raiseTogether/raiseTogetherManager';
+import { TilingManager } from './components/tilingsystem/tilingManager.js';
+import Settings from './settings/settings.js';
+import SignalHandling from './utils/signalHandling.js';
+import GlobalState from './utils/globalState.js';
+import Indicator from './indicator/indicator.js';
+import DBus from './dbus.js';
+import { KeyBindingsDirection, FocusSwitchDirection } from './keybindings.js';
+import KeyBindings from './keybindings.js';
+import SettingsOverride from './settings/settingsOverride.js';
+import { ResizingManager } from './components/tilingsystem/resizeManager.js';
+import OverriddenWindowMenu from './components/window_menu/overriddenWindowMenu.js';
+import Tile from './components/layout/Tile.js';
+import { WindowBorderManager } from './components/windowBorder/windowBorderManager.js';
+import TilingShellWindowManager from './components/windowManager/tilingShellWindowManager.js';
+import ExtendedWindow from './components/tilingsystem/extendedWindow.js';
+import OverriddenAltTab from './components/altTab/overriddenAltTab.js';
+import { LayoutSwitcherPopup } from './components/layoutSwitcher/layoutSwitcher.js';
+import { RaiseTogetherManager } from './components/raiseTogether/raiseTogetherManager.js';
 
 const debug = logger('extension');
 

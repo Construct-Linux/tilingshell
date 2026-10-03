@@ -1,4 +1,4 @@
-import { St, Clutter, Gio } from '../gi/ext';
+import { St, Clutter, Gio } from '../gi/ext.js';
 
 export const createButton = (
     iconName: string,

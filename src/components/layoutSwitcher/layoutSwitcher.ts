@@ -1,11 +1,11 @@
-import Layout from '../../components/layout/Layout';
-import LayoutButton from '../../indicator/layoutButton';
-import GlobalState from '../../utils/globalState';
-import Settings from '../../settings/settings';
-import { St, Clutter } from '../../gi/ext';
+import Layout from '../../components/layout/Layout.js';
+import LayoutButton from '../../indicator/layoutButton.js';
+import GlobalState from '../../utils/globalState.js';
+import Settings from '../../settings/settings.js';
+import { St, Clutter } from '../../gi/ext.js';
 import * as SwitcherPopup from 'resource:///org/gnome/shell/ui/switcherPopup.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import { registerGObjectClass } from '../../utils/gjs';
+import { registerGObjectClass } from '../../utils/gjs.js';
 
 const LAYOUT_HEIGHT: number = 72;
 const LAYOUT_WIDTH: number = 128; // 16:9 ratio. -> (16*layoutHeight) / 9 and then rounded to int
@@ -14,11 +14,10 @@ const GAPS = 3;
 class LayoutSwitcherList extends SwitcherPopup.SwitcherList {
     static { registerGObjectClass(this) }
 
-    // those are defined in the parent but we lack them in the type definition
-    // @esbuild-drop-next-line
-    private _items!: St.Widget[];
-    // @esbuild-drop-next-line
-    private _highlighted!: number;
+    // set by the parent, missing from its type definition; declare emits no
+    // class field that would reset them after super()
+    declare private _items: St.Widget[];
+    declare private _highlighted: number;
 
     private _buttons: LayoutButton[];
 
@@ -72,13 +71,11 @@ class LayoutSwitcherList extends SwitcherPopup.SwitcherList {
 export class LayoutSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     static { registerGObjectClass(this) }
 
-    // those are defined in the parent but we lack them in the type definition
-    // @esbuild-drop-next-line
-    private _switcherList: LayoutSwitcherList;
-    // @esbuild-drop-next-line
-    private _items!: Layout[];
-    // @esbuild-drop-next-line
-    private _selectedIndex!: number;
+    // set by the parent, missing from its type definition; declare emits no
+    // class field that would reset them after super()
+    declare private _switcherList: LayoutSwitcherList;
+    declare private _items: Layout[];
+    declare private _selectedIndex: number;
 
     private _action: number;
     private _backwardAction: number;

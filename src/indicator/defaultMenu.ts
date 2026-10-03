@@ -1,19 +1,19 @@
-import { GObject, St, Clutter } from '../gi/ext';
-import SignalHandling from '../utils/signalHandling';
-import Indicator from './indicator';
+import { GObject, St, Clutter } from '../gi/ext.js';
+import SignalHandling from '../utils/signalHandling.js';
+import Indicator from './indicator.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import { getMonitors } from '../utils/ui';
-import Settings from '../settings/settings';
-import GlobalState from '../utils/globalState';
-import CurrentMenu from './currentMenu';
+import { getMonitors } from '../utils/ui.js';
+import Settings from '../settings/settings.js';
+import GlobalState from '../utils/globalState.js';
+import CurrentMenu from './currentMenu.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-import LayoutButton from './layoutButton';
-import { logger } from '../utils/logger';
-import { registerGObjectClass } from '../utils/gjs';
+import LayoutButton from './layoutButton.js';
+import { logger } from '../utils/logger.js';
+import { registerGObjectClass } from '../utils/gjs.js';
 import { Monitor } from 'resource:///org/gnome/shell/ui/layout.js';
-import Layout from '../components/layout/Layout';
-import { _ } from '../translations';
-import { createButton, createIconButton } from './utils';
+import Layout from '../components/layout/Layout.js';
+import { _ } from '../translations.js';
+import { createButton, createIconButton } from './utils.js';
 
 const debug = logger('DefaultMenu');
 

@@ -1,12 +1,12 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import { Clutter, Mtk, Meta, St } from '../../gi/ext';
-import LayoutWidget from '../../components/layout/LayoutWidget';
-import Tile from '../../components/layout/Tile';
-import Layout from '../../components/layout/Layout';
-import { buildMarginOf, buildRectangle } from '../../utils/ui';
-import TilePreviewWithWindow from './tilePreviewWithWindow';
-import MetaWindowGroup from './MetaWindowGroup';
-import { _ } from '../../translations';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { Clutter, Mtk, Meta, St } from '../../gi/ext.js';
+import LayoutWidget from '../../components/layout/LayoutWidget.js';
+import Tile from '../../components/layout/Tile.js';
+import Layout from '../../components/layout/Layout.js';
+import { buildMarginOf, buildRectangle } from '../../utils/ui.js';
+import TilePreviewWithWindow from './tilePreviewWithWindow.js';
+import MetaWindowGroup from './MetaWindowGroup.js';
+import { _ } from '../../translations.js';
 
 const OUTER_GAPS = 2;
 

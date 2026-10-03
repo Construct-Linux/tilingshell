@@ -1,9 +1,9 @@
-import { St, Clutter } from '../gi/ext';
-import Indicator from './indicator';
-import { createButton } from './utils';
+import { St, Clutter } from '../gi/ext.js';
+import Indicator from './indicator.js';
+import { createButton } from './utils.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-import CurrentMenu from './currentMenu';
-import { _ } from '../translations';
+import CurrentMenu from './currentMenu.js';
+import { _ } from '../translations.js';
 
 export default class EditingMenu implements CurrentMenu {
     private readonly _indicator: Indicator;

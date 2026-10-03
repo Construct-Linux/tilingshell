@@ -2,15 +2,15 @@ import {
     buildRectangle,
     isPointInsideRect,
     clampPointInsideRect,
-} from '../../utils/ui';
-import { GObject, Mtk } from '../../gi/ext';
-import Settings from '../../settings/settings';
-import { EdgeTilingMode } from '../../settings/settings';
-import { registerGObjectClass } from '../../utils/gjs';
-import { logger } from '../../utils/logger';
-import Layout from '../layout/Layout';
-import GlobalState from '../../utils/globalState';
-import Tile from '../../components/layout/Tile';
+} from '../../utils/ui.js';
+import { GObject, Mtk } from '../../gi/ext.js';
+import Settings from '../../settings/settings.js';
+import { EdgeTilingMode } from '../../settings/settings.js';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { logger } from '../../utils/logger.js';
+import Layout from '../layout/Layout.js';
+import GlobalState from '../../utils/globalState.js';
+import Tile from '../../components/layout/Tile.js';
 
 const TOP_EDGE_TILING_OFFSET = 8;
 const QUARTER_PERCENTAGE = 0.5;

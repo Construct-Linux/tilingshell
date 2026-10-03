@@ -1,8 +1,8 @@
-import { St, Mtk, Meta } from '../../gi/ext';
-import SignalHandling from '../../utils/signalHandling';
-import Settings from '../../settings/settings';
-import ExtendedWindow from './extendedWindow';
-import { getWindows } from '../../utils/ui';
+import { St, Mtk, Meta } from '../../gi/ext.js';
+import SignalHandling from '../../utils/signalHandling.js';
+import Settings from '../../settings/settings.js';
+import ExtendedWindow from './extendedWindow.js';
+import { getWindows } from '../../utils/ui.js';
 
 export class ResizingManager {
     private _signals: SignalHandling | null;

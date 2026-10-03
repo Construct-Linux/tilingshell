@@ -1,4 +1,4 @@
-import { GObject } from '../gi/ext';
+import { GObject } from '../gi/ext.js';
 
 // Modified from https://github.com/material-shell/material-shell/blob/main/src/utils/gjs.ts
 // Utility function to call `GObject.registerClass` with the given class.

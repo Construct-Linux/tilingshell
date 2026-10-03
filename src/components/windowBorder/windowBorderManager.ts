@@ -1,7 +1,7 @@
-import { Gio } from '../../gi/ext';
-import WindowBorder from './windowBorder';
-import SignalHandling from '../../utils/signalHandling';
-import Settings from '../../settings/settings';
+import { Gio } from '../../gi/ext.js';
+import WindowBorder from './windowBorder.js';
+import SignalHandling from '../../utils/signalHandling.js';
+import Settings from '../../settings/settings.js';
 
 export class WindowBorderManager {
     private readonly _signals: SignalHandling;

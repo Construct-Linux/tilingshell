@@ -1,19 +1,19 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import { Clutter, Mtk, Meta } from '../../gi/ext';
-import { TilePreviewConstructorProperties } from '../tilepreview/tilePreview';
-import TilePreview from '../tilepreview/tilePreview';
-import LayoutWidget from '../layout/LayoutWidget';
-import Layout from '../layout/Layout';
-import Tile from '../layout/Tile';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { Clutter, Mtk, Meta } from '../../gi/ext.js';
+import { TilePreviewConstructorProperties } from '../tilepreview/tilePreview.js';
+import TilePreview from '../tilepreview/tilePreview.js';
+import LayoutWidget from '../layout/LayoutWidget.js';
+import Layout from '../layout/Layout.js';
+import Tile from '../layout/Tile.js';
 import {
     buildRectangle,
     buildTileGaps,
     isPointInsideRect,
     squaredEuclideanDistance,
-} from '../../utils/ui';
-import TileUtils from '../../components/layout/TileUtils';
-import GlobalState from '../../utils/globalState';
-import { KeyBindingsDirection } from '../../keybindings';
+} from '../../utils/ui.js';
+import TileUtils from '../../components/layout/TileUtils.js';
+import GlobalState from '../../utils/globalState.js';
+import { KeyBindingsDirection } from '../../keybindings.js';
 
 class DynamicTilePreview extends TilePreview {
     static { registerGObjectClass(this) }

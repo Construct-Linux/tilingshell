@@ -1,16 +1,16 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import { Clutter, Mtk, Meta } from '../../gi/ext';
-import Layout from '../layout/Layout';
-import { buildRectangle, isPointInsideRect } from '../../utils/ui';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { Clutter, Mtk, Meta } from '../../gi/ext.js';
+import Layout from '../layout/Layout.js';
+import { buildRectangle, isPointInsideRect } from '../../utils/ui.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import GlobalState from '../../utils/globalState';
-import ExtendedWindow from '../tilingsystem/extendedWindow';
-import SuggestedWindowPreview from './suggestedWindowPreview';
-import Tile from '../../components/layout/Tile';
-import LayoutWidget from '../../components/layout/LayoutWidget';
-import SignalHandling from '../../utils/signalHandling';
-import SuggestionsTilePreview from '../../components/windowsSuggestions/suggestionsTilePreview';
-import TilingShellWindowManager from '../../components/windowManager/tilingShellWindowManager';
+import GlobalState from '../../utils/globalState.js';
+import ExtendedWindow from '../tilingsystem/extendedWindow.js';
+import SuggestedWindowPreview from './suggestedWindowPreview.js';
+import Tile from '../../components/layout/Tile.js';
+import LayoutWidget from '../../components/layout/LayoutWidget.js';
+import SignalHandling from '../../utils/signalHandling.js';
+import SuggestionsTilePreview from '../../components/windowsSuggestions/suggestionsTilePreview.js';
+import TilingShellWindowManager from '../../components/windowManager/tilingShellWindowManager.js';
 
 const ANIMATION_SPEED = 200;
 const MASONRY_LAYOUT_ROW_HEIGHT = 0.31;

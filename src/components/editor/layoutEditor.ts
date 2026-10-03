@@ -1,19 +1,19 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import { GObject, St, Clutter, Mtk, Meta, Shell } from '../../gi/ext';
-import Settings from '../../settings/settings';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { GObject, St, Clutter, Mtk, Meta, Shell } from '../../gi/ext.js';
+import Settings from '../../settings/settings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {
     buildMargin,
     buildRectangle,
     buildTileGaps,
     getWindowsOfMonitor,
-} from '../../utils/ui';
-import Layout from '../layout/Layout';
-import TileUtils from '../layout/TileUtils';
-import Slider from './slider';
-import EditableTilePreview from './editableTilePreview';
-import Tile from '../layout/Tile';
-import HoverLine from './hoverLine';
+} from '../../utils/ui.js';
+import Layout from '../layout/Layout.js';
+import TileUtils from '../layout/TileUtils.js';
+import Slider from './slider.js';
+import EditableTilePreview from './editableTilePreview.js';
+import Tile from '../layout/Tile.js';
+import HoverLine from './hoverLine.js';
 import { Monitor } from 'resource:///org/gnome/shell/ui/layout.js';
 
 export default class LayoutEditor extends St.Widget {

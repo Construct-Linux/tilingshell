@@ -1,6 +1,6 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import { GObject, St, Clutter, Mtk } from '../../gi/ext';
-import EditableTilePreview from './editableTilePreview';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { GObject, St, Clutter, Mtk } from '../../gi/ext.js';
+import EditableTilePreview from './editableTilePreview.js';
 
 export default class Slider extends St.Button {
     static { registerGObjectClass(this, {

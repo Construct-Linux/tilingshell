@@ -1,6 +1,6 @@
-import { Clutter } from '../../gi/ext';
-import { registerGObjectClass } from '../../utils/gjs';
-import TilePreview from '../../components/tilepreview/tilePreview';
+import { Clutter } from '../../gi/ext.js';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import TilePreview from '../../components/tilepreview/tilePreview.js';
 
 export default class TilePreviewWithWindow extends TilePreview {
     static { registerGObjectClass(this) }

@@ -1,6 +1,6 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import { St, Clutter } from '../../gi/ext';
-import EditableTilePreview from './editableTilePreview';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { St, Clutter } from '../../gi/ext.js';
+import EditableTilePreview from './editableTilePreview.js';
 
 export default class HoverLine extends St.Widget {
     static { registerGObjectClass(this) }

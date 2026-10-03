@@ -1,4 +1,4 @@
-import { registerGObjectClass } from '../../utils/gjs';
+import { registerGObjectClass } from '../../utils/gjs.js';
 import {
     Clutter,
     Shell,
@@ -7,7 +7,7 @@ import {
     Graphene,
     Atk,
     Pango,
-} from '../../gi/ext';
+} from '../../gi/ext.js';
 
 const WINDOW_OVERLAY_FADE_TIME = 200;
 

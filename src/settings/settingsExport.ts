@@ -1,6 +1,6 @@
-import { Gio, GLib } from '../gi/prefs';
-import Settings from '../settings/settings';
-import SettingsOverride from '../settings/settingsOverride';
+import { Gio, GLib } from '../gi/prefs.js';
+import Settings from '../settings/settings.js';
+import SettingsOverride from '../settings/settingsOverride.js';
 
 const dconfPath = '/org/gnome/shell/extensions/tilingshell/';
 const excludedKeys: string[] = [

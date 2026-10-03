@@ -1,16 +1,16 @@
-import { registerGObjectClass } from '../../utils/gjs';
-import { GObject, St, Clutter, Mtk, Meta, Gio } from '../../gi/ext';
-import SnapAssistTile from './snapAssistTile';
-import SnapAssistLayout from './snapAssistLayout';
-import Layout from '../layout/Layout';
-import Tile from '../layout/Tile';
-import Settings from '../../settings/settings';
-import GlobalState from '../../utils/globalState';
-import SignalHandling from '../../utils/signalHandling';
+import { registerGObjectClass } from '../../utils/gjs.js';
+import { GObject, St, Clutter, Mtk, Meta, Gio } from '../../gi/ext.js';
+import SnapAssistTile from './snapAssistTile.js';
+import SnapAssistLayout from './snapAssistLayout.js';
+import Layout from '../layout/Layout.js';
+import Tile from '../layout/Tile.js';
+import Settings from '../../settings/settings.js';
+import GlobalState from '../../utils/globalState.js';
+import SignalHandling from '../../utils/signalHandling.js';
 import {
     buildBlurEffect,
     buildMarginOf,
-} from '../../utils/ui';
+} from '../../utils/ui.js';
 
 export const SNAP_ASSIST_SIGNAL = 'snap-assist';
 
