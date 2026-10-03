@@ -37,6 +37,7 @@ build({
     // Post-build sync steps
     fsSync.renameSync(path.resolve(distDir, "styles/stylesheet.css"), path.resolve(distDir, "stylesheet.css"));
     fsSync.renameSync(path.resolve(distDir, "styles/prefs.css"), path.resolve(distDir, "prefs.css"));
+    fsSync.rmdirSync(path.resolve(distDir, "styles"));
     fsSync.cpSync(resourcesDir, distDir, { recursive: true });
 
     const generatedFiles = await glob(`${distDir}/**/*.js`, {});
