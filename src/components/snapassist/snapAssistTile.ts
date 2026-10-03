@@ -2,7 +2,6 @@ import { registerGObjectClass } from '../../utils/gjs';
 import TilePreview from '../tilepreview/tilePreview';
 import Tile from '../layout/Tile';
 import { St, Clutter, Mtk } from '../../gi/ext';
-import { getScalingFactorOf } from '../../utils/ui';
 
 const MIN_RADIUS = 2;
 
@@ -43,16 +42,10 @@ export default class SnapAssistTile extends TilePreview {
         const isRight = this._tile.x + this._tile.width >= 0.99;
         const isBottom = this._tile.y + this._tile.height >= 0.99;
 
-        const [alreadyScaled, scalingFactor] = getScalingFactorOf(this);
-        // the value got is already scaled if the tile is on primary monitor
         const radiusValue =
-            (alreadyScaled ? 1 : scalingFactor) *
-            (this.get_theme_node().get_length('border-radius-value') /
-                (alreadyScaled ? scalingFactor : 1));
+            this.get_theme_node().get_length('border-radius-value');
         const borderWidthValue =
-            (alreadyScaled ? 1 : scalingFactor) *
-            (this.get_theme_node().get_length('border-width-value') /
-                (alreadyScaled ? scalingFactor : 1));
+            this.get_theme_node().get_length('border-width-value');
         // top-left top-right bottom-right bottom-left
         const radius = [
             this._gaps.top === 0 && this._gaps.left === 0 ? 0 : MIN_RADIUS,

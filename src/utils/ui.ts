@@ -1,4 +1,4 @@
-import { St, Meta, Mtk, Clutter, Gio, GLib, Shell } from '../gi/ext';
+import { Meta, Mtk, Clutter, Shell } from '../gi/ext';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { Monitor } from 'resource:///org/gnome/shell/ui/layout.js';
 
@@ -79,20 +79,16 @@ export const buildTileGaps = (
     innerGaps: Clutter.Margin,
     outerGaps: Clutter.Margin,
     container: Mtk.Rectangle,
-    scalingFactor: number = 1,
 ): TileGapsInfo => {
     const { isTop, isRight, isBottom, isLeft } = isTileOnContainerBorder(
         tilePos,
         container,
     );
     const margin = new Clutter.Margin();
-    margin.top = (isTop ? outerGaps.top : innerGaps.top / 2) * scalingFactor;
-    margin.bottom =
-        (isBottom ? outerGaps.bottom : innerGaps.bottom / 2) * scalingFactor;
-    margin.left =
-        (isLeft ? outerGaps.left : innerGaps.left / 2) * scalingFactor;
-    margin.right =
-        (isRight ? outerGaps.right : innerGaps.right / 2) * scalingFactor;
+    margin.top = isTop ? outerGaps.top : innerGaps.top / 2;
+    margin.bottom = isBottom ? outerGaps.bottom : innerGaps.bottom / 2;
+    margin.left = isLeft ? outerGaps.left : innerGaps.left / 2;
+    margin.right = isRight ? outerGaps.right : innerGaps.right / 2;
 
     return {
         gaps: margin,
@@ -101,61 +97,6 @@ export const buildTileGaps = (
         isBottom,
         isLeft,
     };
-};
-
-export const isFractionalScalingEnabled = (
-    mutterSettings: Gio.Settings,
-): boolean => {
-    // fractional scaling (the logical monitor layout mode) is always on in a
-    // Wayland session, no longer an experimental feature
-    if (GLib.getenv('XDG_SESSION_TYPE') === 'wayland') return true;
-
-    return (
-        mutterSettings
-            .get_strv('experimental-features')
-            .find(
-                (feat) =>
-                    feat === 'scale-monitor-framebuffer' ||
-                    feat === 'x11-randr-fractional-scaling',
-            ) !== undefined
-    );
-};
-
-export const getMonitorScalingFactor = (monitorIndex: number) => {
-    const scalingFactor = St.ThemeContext.get_for_stage(
-        global.get_stage(),
-    ).get_scale_factor();
-    if (scalingFactor === 1)
-        return global.display.get_monitor_scale(monitorIndex);
-    return scalingFactor;
-};
-
-export const getScalingFactorOf = (widget: St.Widget): [boolean, number] => {
-    const [hasReference, scalingReference] = widget
-        .get_theme_node()
-        .lookup_length('scaling-reference', true);
-    // if the reference is missing, then the parent opted out of scaling the child
-    if (!hasReference) return [true, 1];
-    // if the scalingReference is not 1, then the scaling factor is already applied on styles (but not on width and height)
-
-    const [hasValue, monitorScalingFactor] = widget
-        .get_theme_node()
-        .lookup_length('monitor-scaling-factor', true);
-    if (!hasValue) return [true, 1];
-
-    return [scalingReference !== 1, monitorScalingFactor / scalingReference];
-};
-
-export const enableScalingFactorSupport = (
-    widget: St.Widget,
-    monitorScalingFactor?: number,
-) => {
-    if (!monitorScalingFactor) return;
-    widget.set_style(`${getScalingFactorSupportString(monitorScalingFactor)};`);
-};
-
-export const getScalingFactorSupportString = (monitorScalingFactor: number) => {
-    return `scaling-reference: 1px; monitor-scaling-factor: ${monitorScalingFactor}px`;
 };
 
 export function buildMarginOf(value: number): Clutter.Margin {

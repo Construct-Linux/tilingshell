@@ -2,16 +2,11 @@
 import * as windowMenu from 'resource:///org/gnome/shell/ui/windowMenu.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import { GObject, St, Clutter, Meta, Gio } from '../../gi/ext';
+import { GObject, St, Clutter, Meta } from '../../gi/ext';
 import GlobalState from '../../utils/globalState';
 import { registerGObjectClass } from '../../utils/gjs';
 import Tile from '../../components/layout/Tile';
-import {
-    enableScalingFactorSupport,
-    getMonitorScalingFactor,
-    getWindows,
-    isFractionalScalingEnabled,
-} from '../../utils/ui';
+import { getWindows } from '../../utils/ui';
 import ExtendedWindow from '../../components/tilingsystem/extendedWindow';
 import TileUtils from '../../components/layout/TileUtils';
 import LayoutTileButtons from './layoutTileButtons';
@@ -130,12 +125,6 @@ export default class OverriddenWindowMenu extends GObject.Object {
             );
         });
 
-        const enableScaling =
-            !isFractionalScalingEnabled(
-                new Gio.Settings({ schemaId: 'org.gnome.mutter' }),
-            ) && window.get_monitor() === Main.layoutManager.primaryIndex;
-        const scalingFactor = getMonitorScalingFactor(window.get_monitor());
-
         if (vacantTiles.length > 0) {
             vacantTiles.sort((a, b) => a.x - b.x);
 
@@ -161,8 +150,6 @@ export default class OverriddenWindowMenu extends GObject.Object {
             const vacantPopupMenu = new PopupMenu.PopupBaseMenuItem();
             // @ts-expect-error "this is not an instance of OverriddenWindowMenu, but it is the WindowMenu itself"
             this.addMenuItem(vacantPopupMenu);
-            if (enableScaling)
-                enableScalingFactorSupport(vacantPopupMenu, scalingFactor);
 
             buildMenuWithLayoutIcon(
                 _('Move to best tile'),
@@ -184,8 +171,6 @@ export default class OverriddenWindowMenu extends GObject.Object {
             const vacantLeftPopupMenu = new PopupMenu.PopupBaseMenuItem();
             // @ts-expect-error "this is not an instance of OverriddenWindowMenu, but it is the WindowMenu itself"
             this.addMenuItem(vacantLeftPopupMenu);
-            if (enableScaling)
-                enableScalingFactorSupport(vacantLeftPopupMenu, scalingFactor);
             buildMenuWithLayoutIcon(
                 _('Move to leftmost tile'),
                 vacantLeftPopupMenu,
@@ -207,8 +192,6 @@ export default class OverriddenWindowMenu extends GObject.Object {
             const vacantRightPopupMenu = new PopupMenu.PopupBaseMenuItem();
             // @ts-expect-error "this is not an instance of OverriddenWindowMenu, but it is the WindowMenu itself"
             this.addMenuItem(vacantRightPopupMenu);
-            if (enableScaling)
-                enableScalingFactorSupport(vacantRightPopupMenu, scalingFactor);
             buildMenuWithLayoutIcon(
                 _('Move to rightmost tile'),
                 vacantRightPopupMenu,
@@ -253,8 +236,6 @@ export default class OverriddenWindowMenu extends GObject.Object {
             rows.push(box);
             container.add_child(box);
         }
-        if (enableScaling)
-            enableScalingFactorSupport(layoutsPopupMenu, scalingFactor);
 
         const layoutHeight: number = 30;
         const layoutWidth: number = 52; // 16:9 ratio. -> (16*layoutHeight) / 9 and then rounded to int

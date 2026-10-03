@@ -1,7 +1,6 @@
 import { registerGObjectClass } from '../../utils/gjs';
 import { GLib, St, Clutter, Shell } from '../../gi/ext';
 import EditableTilePreview from './editableTilePreview';
-import { getScalingFactorOf } from '../../utils/ui';
 
 export default class HoverLine extends St.Widget {
     static { registerGObjectClass(this) }
@@ -17,8 +16,7 @@ export default class HoverLine extends St.Widget {
 
         this._hoveredTile = null;
 
-        const [, scalingFactor] = getScalingFactorOf(this);
-        this._size = 16 * scalingFactor;
+        this._size = 16;
 
         this.hide();
 

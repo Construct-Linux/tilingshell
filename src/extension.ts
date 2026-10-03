@@ -27,7 +27,6 @@ import {
     filterUnfocusableWindows,
     getMonitors,
     getWindows,
-    isFractionalScalingEnabled,
     squaredEuclideanDistance,
 } from './utils/ui';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -55,7 +54,6 @@ const debug = logger('extension');
 export default class TilingShellExtension extends Extension {
     private _indicator: Indicator | null;
     private _tilingManagers: TilingManager[];
-    private _fractionalScalingEnabled: boolean;
     private _dbus: DBus | null;
     private _signals: SignalHandling | null;
     private _keybindings: KeyBindings | null;
@@ -66,7 +64,6 @@ export default class TilingShellExtension extends Extension {
     constructor(metadata: ConstructorParameters<typeof Extension>[0]) {
         super(metadata);
         this._signals = null;
-        this._fractionalScalingEnabled = false;
         this._tilingManagers = [];
         this._indicator = null;
         this._dbus = null;
@@ -78,7 +75,6 @@ export default class TilingShellExtension extends Extension {
 
     createIndicator() {
         this._indicator = new Indicator(this.path, this.uuid);
-        this._indicator.enableScaling = !this._fractionalScalingEnabled;
         this._indicator.enable();
         this._signals?.connect(this._indicator, 'open-preferences', () => this.openPreferences());
     }
@@ -127,10 +123,6 @@ export default class TilingShellExtension extends Extension {
         // force initialization and tracking of windows
         TilingShellWindowManager.get();
 
-        this._fractionalScalingEnabled = isFractionalScalingEnabled(
-            new Gio.Settings({ schema: 'org.gnome.mutter' }),
-        );
-
         if (this._keybindings) this._keybindings.destroy();
         this._keybindings = new KeyBindings(this.getSettings());
 
@@ -161,9 +153,7 @@ export default class TilingShellExtension extends Extension {
         this._resizingManager.enable();
 
         if (this._windowBorderManager) this._windowBorderManager.destroy();
-        this._windowBorderManager = new WindowBorderManager(
-            !this._fractionalScalingEnabled,
-        );
+        this._windowBorderManager = new WindowBorderManager();
         this._windowBorderManager.enable();
 
         this._raiseTogetherManager = new RaiseTogetherManager();
@@ -189,8 +179,7 @@ export default class TilingShellExtension extends Extension {
         debug('building a tiling manager for each monitor');
         this._tilingManagers.forEach((tm) => tm.destroy());
         this._tilingManagers = getMonitors().map(
-            (monitor) =>
-                new TilingManager(monitor, !this._fractionalScalingEnabled),
+            (monitor) => new TilingManager(monitor),
         );
         this._tilingManagers.forEach((tm) => tm.enable());
     }
@@ -213,33 +202,6 @@ export default class TilingShellExtension extends Extension {
                 });
             }
         });
-
-        this._signals.connect(
-            new Gio.Settings({ schema: 'org.gnome.mutter' }),
-            'changed::experimental-features',
-            (_mutterSettings: Gio.Settings) => {
-                if (!_mutterSettings) return;
-
-                const fractionalScalingEnabled =
-                    isFractionalScalingEnabled(_mutterSettings);
-
-                if (this._fractionalScalingEnabled === fractionalScalingEnabled)
-                    return;
-
-                this._fractionalScalingEnabled = fractionalScalingEnabled;
-                this._createTilingManagers();
-                if (this._indicator) {
-                    this._indicator.enableScaling =
-                        !this._fractionalScalingEnabled;
-                }
-                if (this._windowBorderManager)
-                    this._windowBorderManager.destroy();
-                this._windowBorderManager = new WindowBorderManager(
-                    !this._fractionalScalingEnabled,
-                );
-                this._windowBorderManager.enable();
-            },
-        );
 
         if (this._keybindings) {
             this._signals.connect(
@@ -347,7 +309,6 @@ export default class TilingShellExtension extends Extension {
                     const switcher = new LayoutSwitcherPopup(
                         kb.cycleLayoutsAction!,
                         backwardAction!,
-                        !this._fractionalScalingEnabled,
                     );
 
                     if (!switcher.show(currentAction === backwardAction, '', mask)) switcher.destroy();
@@ -801,8 +762,6 @@ export default class TilingShellExtension extends Extension {
         // disable dbus
         this._dbus?.disable();
         this._dbus = null;
-
-        this._fractionalScalingEnabled = false;
 
         OverriddenWindowMenu.destroy();
         OverriddenAltTab.destroy();

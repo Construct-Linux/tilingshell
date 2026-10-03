@@ -6,8 +6,6 @@ import {
     buildMargin,
     buildRectangle,
     buildTileGaps,
-    enableScalingFactorSupport,
-    getMonitorScalingFactor,
     getWindowsOfMonitor,
 } from '../../utils/ui';
 import Layout from '../layout/Layout';
@@ -30,7 +28,7 @@ export default class LayoutEditor extends St.Widget {
 
     private _minimizedWindows: Meta.Window[];
 
-    constructor(layout: Layout, monitor: Monitor, enableScaling: boolean) {
+    constructor(layout: Layout, monitor: Monitor) {
         super({ styleClass: 'layout-editor' });
 
         Main.layoutManager.addChrome(this);
@@ -40,11 +38,6 @@ export default class LayoutEditor extends St.Widget {
             'visible',
             GObject.BindingFlags.DEFAULT,
         );
-
-        if (enableScaling) {
-            const scalingFactor = getMonitorScalingFactor(monitor.index);
-            enableScalingFactorSupport(this, scalingFactor);
-        }
 
         const workArea = Main.layoutManager.getWorkAreaForMonitor(
             monitor.index,

@@ -2,13 +2,7 @@ import { GObject, Meta, St, Clutter, Shell, Gio, GLib } from '../../gi/ext';
 import SignalHandling from '../../utils/signalHandling';
 import { registerGObjectClass } from '../../utils/gjs';
 import Settings from '../../settings/settings';
-import {
-    buildRectangle,
-    enableScalingFactorSupport,
-    getMonitorScalingFactor,
-    getScalingFactorOf,
-    getScalingFactorSupportString,
-} from '../../utils/ui';
+import { buildRectangle } from '../../utils/ui';
 
 Gio._promisify(Shell.Screenshot, 'composite_to_stream');
 
@@ -27,13 +21,12 @@ export default class WindowBorder extends St.DrawingArea {
     private _window: Meta.Window;
     private _windowMonitor: number;
     private _bindings: GObject.Binding[];
-    private _enableScaling: boolean;
     private _borderRadiusValue: [number, number, number, number];
     private _timeout: GLib.Source | undefined;
     private _delayedSmartBorderRadius: boolean;
     private _scaledBorderWidth: number;
 
-    constructor(win: Meta.Window, enableScaling: boolean) {
+    constructor(win: Meta.Window) {
         super({
             style_class: 'window-border'
         });
@@ -42,7 +35,6 @@ export default class WindowBorder extends St.DrawingArea {
         this._scaledBorderWidth = 1;
         this._window = win;
         this._windowMonitor = win.get_monitor();
-        this._enableScaling = enableScaling;
         this._delayedSmartBorderRadius = false;
         const smartRadius = Settings.ENABLE_SMART_WINDOW_BORDER_RADIUS;
         this._borderRadiusValue = [
@@ -316,36 +308,17 @@ export default class WindowBorder extends St.DrawingArea {
     }
 
     public updateStyle(): void {
-        // handle scale factor of the monitor
-        const monitorScalingFactor = this._enableScaling
-            ? getMonitorScalingFactor(this._window.get_monitor())
-            : undefined;
-        // CAUTION: this overrides the CSS style
-        enableScalingFactorSupport(this, monitorScalingFactor);
-
-        const [alreadyScaled, scalingFactor] = getScalingFactorOf(this);
-        // the value is already scaled if the border is on primary monitor
-        const borderWidth =
-            (alreadyScaled ? 1 : scalingFactor) *
-            (Settings.WINDOW_BORDER_WIDTH /
-                (alreadyScaled ? scalingFactor : 1));
-        this._scaledBorderWidth = scalingFactor * Settings.WINDOW_BORDER_WIDTH;
+        const borderWidth = Settings.WINDOW_BORDER_WIDTH;
+        this._scaledBorderWidth = borderWidth;
         const borderColor = Settings.WINDOW_USE_CUSTOM_BORDER_COLOR
             ? Settings.WINDOW_BORDER_COLOR
             : '-st-accent-color';
-        const radius = this._borderRadiusValue.map((val) => {
-            const valWithBorder = val === 0 ? val : (val + borderWidth);
-            return (
-                (alreadyScaled ? 1 : scalingFactor) *
-                (valWithBorder / (alreadyScaled ? scalingFactor : 1))
-            );
-        });
+        const radius = this._borderRadiusValue.map((val) =>
+            val === 0 ? val : val + borderWidth,
+        );
 
-        const scalingFactorSupportString = monitorScalingFactor
-            ? `${getScalingFactorSupportString(monitorScalingFactor)};`
-            : '';
         this.set_style(
-            `border-color: ${borderColor}; border-radius: ${radius[St.Corner.TOPLEFT]}px ${radius[St.Corner.TOPRIGHT]}px ${radius[St.Corner.BOTTOMRIGHT]}px ${radius[St.Corner.BOTTOMLEFT]}px; ${scalingFactorSupportString}`,
+            `border-color: ${borderColor}; border-radius: ${radius[St.Corner.TOPLEFT]}px ${radius[St.Corner.TOPRIGHT]}px ${radius[St.Corner.BOTTOMRIGHT]}px ${radius[St.Corner.BOTTOMLEFT]}px;`,
         );
         // not setting border-width: ${borderWidth}px since we will draw the border manually in vfunc_repaint
     }

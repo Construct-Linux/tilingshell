@@ -1,10 +1,6 @@
 import { St, Clutter, Mtk } from '../../gi/ext';
 import TilePreview from '../tilepreview/tilePreview';
-import {
-    buildRectangle,
-    buildTileGaps,
-    enableScalingFactorSupport,
-} from '../../utils/ui';
+import { buildRectangle, buildTileGaps } from '../../utils/ui';
 import { logger } from '../../utils/logger';
 import Layout from './Layout';
 import Tile from './Tile';
@@ -21,7 +17,6 @@ export interface LayoutWidgetConstructorProperties
     innerGaps: Clutter.Margin;
     outerGaps: Clutter.Margin;
     containerRect?: Mtk.Rectangle;
-    scalingFactor?: number;
 }
 // }
 
@@ -36,28 +31,16 @@ export default class LayoutWidget<
     protected _layout: Layout;
     protected _innerGaps: Clutter.Margin;
     protected _outerGaps: Clutter.Margin;
-    protected _scalingFactor: number;
 
     constructor(params: LayoutWidgetConstructorProperties) {
         super({ styleClass: params.styleClass || '' });
         if (params.parent) params.parent.add_child(this);
-        this._scalingFactor = 1;
-        if (params.scalingFactor) this.scalingFactor = params.scalingFactor;
 
         this._previews = [];
         this._containerRect = params.containerRect || buildRectangle();
         this._layout = params.layout || new Layout([], '');
         this._innerGaps = params.innerGaps || new Clutter.Margin();
         this._outerGaps = params.outerGaps || new Clutter.Margin();
-    }
-
-    public set scalingFactor(value: number) {
-        enableScalingFactorSupport(this, value);
-        this._scalingFactor = value;
-    }
-
-    public get scalingFactor(): number {
-        return this._scalingFactor;
     }
 
     public get innerGaps(): Clutter.Margin {

@@ -2,12 +2,7 @@ import { GObject, St, Clutter } from '../gi/ext';
 import SignalHandling from '../utils/signalHandling';
 import Indicator from './indicator';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import {
-    enableScalingFactorSupport,
-    getMonitors,
-    getMonitorScalingFactor,
-    getScalingFactorOf,
-} from '../utils/ui';
+import { getMonitors } from '../utils/ui';
 import Settings from '../settings/settings';
 import GlobalState from '../utils/globalState';
 import CurrentMenu from './currentMenu';
@@ -150,11 +145,10 @@ export default class DefaultMenu implements CurrentMenu {
 
     private _layoutsRows: LayoutsRow[];
     private _container: St.BoxLayout;
-    private _scalingFactor: number;
     private _children: St.Widget[];
     private _openPrefsFn: () => void;
 
-    constructor(indicator: Indicator, enableScalingFactor: boolean, openPrefsFn: () => void) {
+    constructor(indicator: Indicator, openPrefsFn: () => void) {
         this._indicator = indicator;
         this._signals = new SignalHandling();
         this._openPrefsFn = openPrefsFn;
@@ -176,17 +170,6 @@ export default class DefaultMenu implements CurrentMenu {
             layoutsPopupMenu,
         );
 
-        if (enableScalingFactor) {
-            const monitor = Main.layoutManager.findMonitorForActor(
-                this._container,
-            );
-            const scalingFactor = getMonitorScalingFactor(
-                monitor?.index ?? Main.layoutManager.primaryIndex,
-            );
-            enableScalingFactorSupport(this._container, scalingFactor);
-        }
-        this._scalingFactor = getScalingFactorOf(this._container)[1];
-
         this._layoutsRows = [];
         this._drawLayouts();
         // update the layouts shown by the indicator when they are modified
@@ -206,7 +189,6 @@ export default class DefaultMenu implements CurrentMenu {
             Settings,
             Settings.KEY_SETTING_SELECTED_LAYOUTS,
             () => {
-                this._updateScaling();
                 if (this._layoutsRows.length !== getMonitors().length)
                     this._drawLayouts();
 
@@ -241,17 +223,6 @@ export default class DefaultMenu implements CurrentMenu {
         );
 
         this._signals.connect(Main.layoutManager, 'monitors-changed', () => {
-            if (!enableScalingFactor) return;
-
-            const monitor = Main.layoutManager.findMonitorForActor(
-                this._container,
-            );
-            const scalingFactor = getMonitorScalingFactor(
-                monitor?.index ?? Main.layoutManager.primaryIndex,
-            );
-            enableScalingFactorSupport(this._container, scalingFactor);
-
-            this._updateScaling();
             if (this._layoutsRows.length !== getMonitors().length)
                 this._drawLayouts();
 
@@ -309,14 +280,6 @@ export default class DefaultMenu implements CurrentMenu {
         });
 
         return monitorsDetails;
-    }
-
-    private _updateScaling() {
-        const newScalingFactor = getScalingFactorOf(this._container)[1];
-        if (this._scalingFactor === newScalingFactor) return;
-
-        this._scalingFactor = newScalingFactor;
-        this._drawLayouts();
     }
 
     private _buildEditingButtonsRow() {

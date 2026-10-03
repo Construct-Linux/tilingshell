@@ -29,7 +29,6 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
         innerGaps: Clutter.Margin,
         outerGaps: Clutter.Margin,
         containerRect: Mtk.Rectangle,
-        scalingFactor?: number,
     ) {
         super({
             containerRect,
@@ -37,7 +36,6 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
             layout: new Layout([], ''),
             innerGaps,
             outerGaps,
-            scalingFactor,
         });
         this.canFocus = true;
         this.reactive = true;

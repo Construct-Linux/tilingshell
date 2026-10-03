@@ -3,10 +3,6 @@ import LayoutButton from '../../indicator/layoutButton';
 import GlobalState from '../../utils/globalState';
 import Settings from '../../settings/settings';
 import { St, Clutter } from '../../gi/ext';
-import {
-    enableScalingFactorSupport,
-    getMonitorScalingFactor,
-} from '../../utils/ui';
 import * as SwitcherPopup from 'resource:///org/gnome/shell/ui/switcherPopup.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { registerGObjectClass } from '../../utils/gjs';
@@ -26,11 +22,7 @@ class LayoutSwitcherList extends SwitcherPopup.SwitcherList {
 
     private _buttons: LayoutButton[];
 
-    constructor(
-        items: Layout[],
-        parent: LayoutSwitcherPopup,
-        monitorScalingFactor?: number,
-    ) {
+    constructor(items: Layout[], parent: LayoutSwitcherPopup) {
         // @ts-expect-error "Parent can take a boolean"
         super(false); // false since layouts won't be squared
         this.add_style_class_name('layout-switcher-list');
@@ -39,7 +31,6 @@ class LayoutSwitcherList extends SwitcherPopup.SwitcherList {
         // so those can call get_theme_node on their parent
         // then we can remove this as child
         parent.add_child(this);
-        enableScalingFactorSupport(this, monitorScalingFactor);
         items.forEach((lay) => this._addLayoutItem(lay));
         parent.remove_child(this);
     }
@@ -92,21 +83,13 @@ export class LayoutSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     private _action: number;
     private _backwardAction: number;
 
-    constructor(action: number, backwardAction: number, enableScaling: boolean) {
+    constructor(action: number, backwardAction: number) {
         // @ts-expect-error "Parent can take a list"
         super(GlobalState.get().layouts);
 
         this._action = action;
         this._backwardAction = backwardAction;
-        // handle scale factor of the monitor
-        const monitorScalingFactor = enableScaling
-            ? getMonitorScalingFactor(this._getCurrentMonitorIndex())
-            : undefined;
-        this._switcherList = new LayoutSwitcherList(
-            this._items,
-            this,
-            monitorScalingFactor,
-        );
+        this._switcherList = new LayoutSwitcherList(this._items, this);
     }
 
     _initialSelection(backward: boolean, _binding: number) {

@@ -3,7 +3,7 @@ import LayoutWidget from '../components/layout/LayoutWidget';
 import SnapAssistTile from '../components/snapassist/snapAssistTile';
 import Layout from '../components/layout/Layout';
 import Tile from '../components/layout/Tile';
-import { buildMarginOf, buildRectangle, getScalingFactorOf } from '../utils/ui';
+import { buildMarginOf, buildRectangle } from '../utils/ui';
 import { registerGObjectClass } from '../utils/gjs';
 
 class LayoutButtonWidget extends LayoutWidget<SnapAssistTile> {
@@ -54,15 +54,13 @@ export default class LayoutButton extends St.Button {
 
         parent.add_child(this);
 
-        const scalingFactor = getScalingFactorOf(this)[1];
-
         this.child = new St.Widget(); // the child is just a container
         new LayoutButtonWidget(
             this.child,
             layout,
             gapSize,
-            height * scalingFactor,
-            width * scalingFactor,
+            height,
+            width,
         );
     }
 }

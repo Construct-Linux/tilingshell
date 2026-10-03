@@ -1,5 +1,5 @@
 import { St, Clutter, Mtk, Meta } from '../../gi/ext';
-import { buildRectangle, getScalingFactorOf } from '../../utils/ui';
+import { buildRectangle } from '../../utils/ui';
 import GlobalState from '../../utils/globalState';
 import Tile from '../../components/layout/Tile';
 import { registerGObjectClass } from '../../utils/gjs';
@@ -36,11 +36,7 @@ export default class TilePreview extends St.Widget {
     }
 
     public set gaps(gaps: Clutter.Margin) {
-        const [, scalingFactor] = getScalingFactorOf(this);
-        this._gaps.top = gaps.top * scalingFactor;
-        this._gaps.right = gaps.right * scalingFactor;
-        this._gaps.bottom = gaps.bottom * scalingFactor;
-        this._gaps.left = gaps.left * scalingFactor;
+        this._gaps = gaps.copy();
     }
 
     public updateBorderRadius(

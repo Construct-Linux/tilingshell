@@ -1,7 +1,6 @@
 import { registerGObjectClass } from '../../utils/gjs';
 import { GObject, St, Clutter, Mtk } from '../../gi/ext';
 import EditableTilePreview from './editableTilePreview';
-import { getScalingFactorOf } from '../../utils/ui';
 
 export default class Slider extends St.Button {
     static { registerGObjectClass(this, {
@@ -26,7 +25,6 @@ export default class Slider extends St.Button {
     private _nextTiles: EditableTilePreview[];
     private _minTileCoord: number;
     private _maxTileCoord: number;
-    private _scalingFactor: number;
 
     constructor(
         parent: Clutter.Actor,
@@ -47,8 +45,6 @@ export default class Slider extends St.Button {
 
         this._groupId = groupId;
         this._horizontalDir = horizontal;
-        const [, scalingFactor] = getScalingFactorOf(this);
-        this._scalingFactor = scalingFactor;
         this.set_width(this.desiredWidth);
         this.set_height(this.desiredHeight);
 
@@ -75,15 +71,11 @@ export default class Slider extends St.Button {
     }
 
     private get desiredWidth(): number {
-        return (
-            (this._horizontalDir ? 12 : this._sliderSize) * this._scalingFactor
-        );
+        return this._horizontalDir ? 12 : this._sliderSize;
     }
 
     private get desiredHeight(): number {
-        return (
-            (this._horizontalDir ? this._sliderSize : 12) * this._scalingFactor
-        );
+        return this._horizontalDir ? this._sliderSize : 12;
     }
 
     private get preferredCursor(): Clutter.CursorType {

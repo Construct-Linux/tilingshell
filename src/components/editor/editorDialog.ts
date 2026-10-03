@@ -7,11 +7,6 @@ import Layout from '../../components/layout/Layout';
 
 import Tile from '../../components/layout/Tile';
 import * as ModalDialog from 'resource:///org/gnome/shell/ui/modalDialog.js';
-import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import {
-    enableScalingFactorSupport,
-    getMonitorScalingFactor,
-} from '../../utils/ui';
 import { _ } from '../../translations';
 
 export default class EditorDialog extends ModalDialog.ModalDialog {
@@ -24,7 +19,6 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
     private _layoutsBoxLayout: St.BoxLayout;
 
     constructor(params: {
-        enableScaling: boolean;
         onDeleteLayout: (_ind: number, _lay: Layout) => void;
         onSelectLayout: (_ind: number, _lay: Layout) => void;
         onNewLayout: () => void;
@@ -37,14 +31,6 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
             destroyOnClose: true,
             styleClass: 'editor-dialog',
         });
-
-        if (params.enableScaling) {
-            const monitor = Main.layoutManager.findMonitorForActor(this);
-            const scalingFactor = getMonitorScalingFactor(
-                monitor?.index ?? Main.layoutManager.primaryIndex,
-            );
-            enableScalingFactorSupport(this, scalingFactor);
-        }
 
         this.contentLayout.add_child(
             new St.Label({

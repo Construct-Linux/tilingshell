@@ -7,13 +7,11 @@ export class WindowBorderManager {
     private readonly _signals: SignalHandling;
 
     private _border: WindowBorder | null;
-    private _enableScaling: boolean;
     private _interfaceSettings: Gio.Settings;
 
-    constructor(enableScaling: boolean) {
+    constructor() {
         this._signals = new SignalHandling();
         this._border = null;
-        this._enableScaling = enableScaling;
         this._interfaceSettings = new Gio.Settings({
             schema_id: 'org.gnome.desktop.interface',
         });
@@ -81,7 +79,7 @@ export class WindowBorderManager {
         }
 
         if (!this._border)
-            this._border = new WindowBorder(metaWindow, this._enableScaling);
+            this._border = new WindowBorder(metaWindow);
         else this._border.trackWindow(metaWindow);
     }
 }

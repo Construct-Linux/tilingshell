@@ -63,7 +63,6 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
         innerGaps: Clutter.Margin,
         outerGaps: Clutter.Margin,
         workarea: Mtk.Rectangle,
-        scalingFactor?: number,
     ) {
         super({
             containerRect: workarea,
@@ -71,7 +70,6 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
             layout,
             innerGaps,
             outerGaps,
-            scalingFactor,
         });
         this._showing = false;
         super.relayout();

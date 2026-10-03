@@ -3,7 +3,7 @@ import LayoutWidget from '../../components/layout/LayoutWidget';
 import Tile from '../../components/layout/Tile';
 import SnapAssistTile from '../../components/snapassist/snapAssistTile';
 import { registerGObjectClass } from '../../utils/gjs';
-import { buildRectangle, getScalingFactorOf } from '../../utils/ui';
+import { buildRectangle } from '../../utils/ui';
 import { Clutter, Mtk } from '../../gi/ext';
 
 export default class LayoutIcon extends LayoutWidget<SnapAssistTile> {
@@ -26,10 +26,6 @@ export default class LayoutIcon extends LayoutWidget<SnapAssistTile> {
             containerRect: buildRectangle(),
             styleClass: 'layout-icon button',
         });
-
-        const [, scalingFactor] = getScalingFactorOf(this);
-        width *= scalingFactor;
-        height *= scalingFactor;
 
         super.relayout({
             containerRect: buildRectangle({ x: 0, y: 0, width, height }),

@@ -33,7 +33,6 @@ export default class Indicator extends PanelMenu.Button {
     private _editorDialog: EditorDialog | null;
     private _currentMenu: CurrentMenu | null;
     private _state: IndicatorState;
-    private _enableScaling: boolean;
     private _path: string;
     private _keyPressEvent: number | null;
 
@@ -62,7 +61,6 @@ export default class Indicator extends PanelMenu.Button {
         this._currentMenu = null;
         this._state = IndicatorState.DEFAULT;
         this._keyPressEvent = null;
-        this._enableScaling = false;
         this._path = path;
 
         this.connect('destroy', this._onDestroy.bind(this));
@@ -72,19 +70,9 @@ export default class Indicator extends PanelMenu.Button {
         return this._path;
     }
 
-    public set enableScaling(value: boolean) {
-        if (this._enableScaling === value) return;
-        this._enableScaling = value;
-
-        if (this._currentMenu && this._state === IndicatorState.DEFAULT) {
-            this._currentMenu.destroy();
-            this._currentMenu = new DefaultMenu(this, this._enableScaling, this._openPreferences.bind(this));
-        }
-    }
-
     public enable() {
         (this.menu as PopupMenu.PopupMenu).removeAll();
-        this._currentMenu = new DefaultMenu(this, this._enableScaling, this._openPreferences.bind(this));
+        this._currentMenu = new DefaultMenu(this, this._openPreferences.bind(this));
     }
 
     public selectLayoutOnClick(monitorIndex: number, layoutToSelectId: string) {
@@ -112,7 +100,6 @@ export default class Indicator extends PanelMenu.Button {
             this._layoutEditor = new LayoutEditor(
                 newLayout,
                 Main.layoutManager.monitors[Main.layoutManager.primaryIndex],
-                this._enableScaling,
             );
         }
         this._setState(IndicatorState.CREATE_NEW);
@@ -123,7 +110,6 @@ export default class Indicator extends PanelMenu.Button {
         if (this._editorDialog) return;
 
         this._editorDialog = new EditorDialog({
-            enableScaling: this._enableScaling,
             onNewLayout: () => {
                 this.newLayoutOnClick(false);
             },
@@ -159,7 +145,6 @@ export default class Indicator extends PanelMenu.Button {
                         Main.layoutManager.monitors[
                             Main.layoutManager.primaryIndex
                         ],
-                        this._enableScaling,
                     );
                 }
 
@@ -227,7 +212,7 @@ export default class Indicator extends PanelMenu.Button {
         this._currentMenu?.destroy();
         switch (newState) {
             case IndicatorState.DEFAULT:
-                this._currentMenu = new DefaultMenu(this, this._enableScaling, this._openPreferences.bind(this));
+                this._currentMenu = new DefaultMenu(this, this._openPreferences.bind(this));
                 if (!Settings.SHOW_INDICATOR) this.hide();
                 if (this._keyPressEvent) {
                     global.stage.disconnect(this._keyPressEvent);

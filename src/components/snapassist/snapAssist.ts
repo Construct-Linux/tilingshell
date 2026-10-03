@@ -10,8 +10,6 @@ import SignalHandling from '../../utils/signalHandling';
 import {
     buildBlurEffect,
     buildMarginOf,
-    enableScalingFactorSupport,
-    getScalingFactorOf,
 } from '../../utils/ui';
 
 export const SNAP_ASSIST_SIGNAL = 'snap-assist';
@@ -83,7 +81,7 @@ class SnapAssistContent extends St.BoxLayout {
         this._padding = 0;
         this._blur = false;
         this._snapAssistantAnimationTime = 100;
-        this._snapAssistantThreshold = 54 * getScalingFactorOf(this)[1];
+        this._snapAssistantThreshold = 54;
 
         Settings.bind(
             Settings.KEY_ENABLE_BLUR_SNAP_ASSISTANT,
@@ -136,7 +134,7 @@ class SnapAssistContent extends St.BoxLayout {
     }
 
     private set snapAssistantThreshold(value: number) {
-        this._snapAssistantThreshold = value * getScalingFactorOf(this)[1];
+        this._snapAssistantThreshold = value;
     }
 
     private set snapAssistantAnimationTime(value: number) {
@@ -161,11 +159,7 @@ class SnapAssistContent extends St.BoxLayout {
     private _applyStyle() {
         this.set_style(null);
 
-        const [alreadyScaled, finalScalingFactor] = getScalingFactorOf(this);
-        this._padding =
-            (alreadyScaled ? 1 : finalScalingFactor) *
-            (this.get_theme_node().get_length('padding-value') /
-                (alreadyScaled ? finalScalingFactor : 1));
+        this._padding = this.get_theme_node().get_length('padding-value');
 
         const backgroundColor = this.get_theme_node()
             .get_background_color()
@@ -228,12 +222,10 @@ class SnapAssistContent extends St.BoxLayout {
         this._snapAssistLayouts.forEach((lay) => lay.destroy());
         this.remove_all_children();
 
-        const [, scalingFactor] = getScalingFactorOf(this);
-
         const layoutGaps = buildMarginOf(GAPS);
 
-        const width = SNAP_ASSIST_LAYOUT_WIDTH * scalingFactor;
-        const height = SNAP_ASSIST_LAYOUT_HEIGHT * scalingFactor;
+        const width = SNAP_ASSIST_LAYOUT_WIDTH;
+        const height = SNAP_ASSIST_LAYOUT_HEIGHT;
         // build the layouts inside the snap assistant. Place a spacer between each layout
         this._snapAssistLayouts = layouts.map((lay, ind) => {
             const saLay = new SnapAssistLayout(
@@ -394,16 +386,11 @@ export default class SnapAssist extends St.Widget {
 
     private readonly _content: SnapAssistContent;
 
-    constructor(
-        parent: Clutter.Actor,
-        workArea: Mtk.Rectangle,
-        scalingFactor?: number,
-    ) {
+    constructor(parent: Clutter.Actor, workArea: Mtk.Rectangle) {
         super();
         parent.add_child(this);
         this.workArea = workArea;
         this.set_clip(0, 0, workArea.width, workArea.height);
-        if (scalingFactor) enableScalingFactorSupport(this, scalingFactor);
 
         this._content = new SnapAssistContent(this);
     }
