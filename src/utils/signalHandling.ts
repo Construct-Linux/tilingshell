@@ -4,12 +4,12 @@ type ObjectWithSignals = {
 };
 
 export default class SignalHandling {
-    private readonly _signalsIds: {
-        [key: string]: { id: number; obj: ObjectWithSignals };
-    };
+    // one entry per connection: the same signal name is often connected on
+    // several objects (or twice on one), so a name can't be the key
+    private _connections: { obj: ObjectWithSignals; id: number }[];
 
     constructor() {
-        this._signalsIds = {};
+        this._connections = [];
     }
 
     public connect(
@@ -17,33 +17,25 @@ export default class SignalHandling {
         key: string,
         fun: (..._args: never[]) => void,
     ) {
-        const signalId = obj.connect(key, fun);
-        this._signalsIds[key] = { id: signalId, obj };
+        const id = obj.connect(key, fun);
+        this._connections.push({ obj, id });
 
-        return signalId;
+        return id;
     }
 
-    public disconnect(): boolean;
-    public disconnect(_obj: ObjectWithSignals): boolean;
-    public disconnect(obj?: ObjectWithSignals) {
-        if (!obj) {
-            const toDelete: string[] = [];
-            Object.keys(this._signalsIds).forEach((key) => {
-                this._signalsIds[key].obj.disconnect(this._signalsIds[key].id);
-                toDelete.push(key);
-            });
-            const result = toDelete.length > 0;
-            toDelete.forEach((key) => delete this._signalsIds[key]);
-            return result;
-        } else {
-            const keyFound = Object.keys(this._signalsIds).find(
-                (key) => this._signalsIds[key].obj === obj,
-            );
-            if (keyFound) {
-                obj.disconnect(this._signalsIds[keyFound].id);
-                delete this._signalsIds[keyFound];
+    /**
+     * Disconnects every handler connected through this instance, or only the
+     * ones connected on obj.
+     */
+    public disconnect(obj?: ObjectWithSignals): void {
+        const keep: { obj: ObjectWithSignals; id: number }[] = [];
+        for (const conn of this._connections) {
+            if (obj && conn.obj !== obj) {
+                keep.push(conn);
+                continue;
             }
-            return keyFound;
+            conn.obj.disconnect(conn.id);
         }
+        this._connections = keep;
     }
 }

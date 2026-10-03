@@ -6,7 +6,7 @@ import ExtendedWindow from '../tilingsystem/extendedWindow';
 
 export class RaiseTogetherManager {
     private readonly _signals: SignalHandling;
-    private readonly _raiseId: { [windowId: string]: { id: number, win: Meta.Window } }; // map window id to 'raised' signal id
+    private _raiseId: { [windowId: string]: number }; // map window id to 'raised' signal id
 
     constructor() {
         this._signals = new SignalHandling();
@@ -25,13 +25,7 @@ export class RaiseTogetherManager {
 
     public destroy() {
         this._signals.disconnect();
-
-        const toDelete: string[] = [];
-        Object.keys(this._raiseId).forEach((key) => {
-            this._raiseId[key].win.disconnect(this._raiseId[key].id);
-            toDelete.push(key);
-        });
-        toDelete.forEach((key) => delete this._raiseId[key]);
+        this._raiseId = {};
     }
 
     public _turnOn() {
@@ -57,8 +51,9 @@ export class RaiseTogetherManager {
 
             this._onTiledWindowRaised(window);
         });
-        this._raiseId[window.get_id()] = { id: raisedId, win: window };
-        window.connect("unmanaged", () => {
+        this._raiseId[window.get_id()] = raisedId;
+        this._signals.connect(window, 'unmanaged', () => {
+            this._signals.disconnect(window);
             delete this._raiseId[window.get_id()];
         });
     }
@@ -85,16 +80,12 @@ export class RaiseTogetherManager {
     }
 
     private _stopRaiseSignalHandling(window: Meta.Window) {
-        const data = this._raiseId[window.get_id()];
-        if (!data) return;
-
-        window.block_signal_handler(data.id);
+        const id = this._raiseId[window.get_id()];
+        if (id) window.block_signal_handler(id);
     }
 
     private _restartRaiseSignalHandling(window: Meta.Window) {
-        const data = this._raiseId[window.get_id()];
-        if (!data) return;
-
-        window.unblock_signal_handler(data.id);
+        const id = this._raiseId[window.get_id()];
+        if (id) window.unblock_signal_handler(id);
     }
 }

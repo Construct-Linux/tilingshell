@@ -860,6 +860,7 @@ export class TilingManager {
         this._grabStartPosition = null;
 
         this._signals.disconnect(window);
+        this._signals.disconnect(global.stage);
         TouchPointer.get().reset();
 
         const currentWs = window.get_workspace();
