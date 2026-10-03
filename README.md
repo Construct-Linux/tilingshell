@@ -23,6 +23,17 @@ Fixes, each worth sending upstream:
   lock since #560 (upstream #559).
 - `fix: give a restored window back its tile`: a window unmaximized back into
   its tile is tiled again (upstream #372).
+- `signals: keep every connection instead of one per signal name`: each window
+  drag leaked two global.stage handlers, one of them warping the pointer on
+  tablet motion.
+- `alttab: stop adding the tile preview to its parent twice`: a Clutter
+  critical per tiled window on every Alt+Tab.
+- `extension: guard focus keybindings against a missing focus window`.
+- `extension: drop the version migrations ...`: the 17.3 migration ran on every
+  enable and overwrote cycle-layouts-backward.
+- `windowborder: draw the border with St CSS instead of Cairo`, and its
+  first-frame and accent-color handler leaks.
+- `styles: use transition-duration, the only transition St reads`.
 
 Build and cleanup:
 
