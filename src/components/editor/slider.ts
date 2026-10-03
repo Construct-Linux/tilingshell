@@ -1,5 +1,5 @@
 import { registerGObjectClass } from '../../utils/gjs';
-import { GObject, St, Clutter, Mtk, Meta } from '../../gi/ext';
+import { GObject, St, Clutter, Mtk } from '../../gi/ext';
 import EditableTilePreview from './editableTilePreview';
 import { getScalingFactorOf } from '../../utils/ui';
 
@@ -65,7 +65,7 @@ export default class Slider extends St.Button {
         );
 
         this.connect('notify::hover', () =>
-            global.display.set_cursor(this.preferredCursor),
+            this.set_cursor_type(this.preferredCursor),
         );
         this.connect('destroy', this._onDestroy.bind(this));
     }
@@ -86,18 +86,12 @@ export default class Slider extends St.Button {
         );
     }
 
-    private get preferredCursor(): Meta.Cursor {
-        // These constants were renamed in Gnome 48 from NORTH/WEST_* to N/W_*
-        // @ts-expect-error "WEST_RESIZE is valid for GNOME < 48"
-        const horizCursor = Meta.Cursor.WEST_RESIZE ?? Meta.Cursor.W_RESIZE;
-        // @ts-expect-error "NORTH_RESIZE is valid for GNOME < 48"
-        const vertCursor = Meta.Cursor.NORTH_RESIZE ?? Meta.Cursor.N_RESIZE;
-
+    private get preferredCursor(): Clutter.CursorType {
         return this.hover || this._dragging
             ? this._horizontalDir
-                ? horizCursor
-                : vertCursor
-            : Meta.Cursor.DEFAULT;
+                ? Clutter.CursorType.W_RESIZE
+                : Clutter.CursorType.N_RESIZE
+            : Clutter.CursorType.INHERIT;
     }
 
     public addTile(tile: EditableTilePreview) {
@@ -324,7 +318,7 @@ export default class Slider extends St.Button {
         if (this._dragging) return Clutter.EVENT_PROPAGATE;
 
         this._dragging = true;
-        global.display.set_cursor(this.preferredCursor);
+        this.set_cursor_type(this.preferredCursor);
 
         this._grab = global.stage.grab(this);
 
@@ -343,7 +337,7 @@ export default class Slider extends St.Button {
             this._dragging = false;
             this._lastEventCoord = null;
         }
-        global.display.set_cursor(this.preferredCursor);
+        this.set_cursor_type(this.preferredCursor);
         return Clutter.EVENT_STOP;
     }
 
