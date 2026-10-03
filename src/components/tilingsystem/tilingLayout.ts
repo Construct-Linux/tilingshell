@@ -100,16 +100,6 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
         return this._showing;
     }
 
-    public openBelow(window: Meta.Window) {
-        if (this._showing) return;
-
-        const windowActor = window.get_compositor_private() as Clutter.Actor;
-        if (!windowActor) return;
-
-        global.windowGroup.set_child_below_sibling(this, windowActor);
-        this.open();
-    }
-
     public openAbove(_window: Meta.Window) {
         if (this._showing) return;
 

@@ -1,6 +1,5 @@
 import { registerGObjectClass } from '../../utils/gjs';
-import { GObject, St, Clutter, Mtk } from '../../gi/ext';
-import { buildBlurEffect } from '../../utils/ui';
+import { St, Clutter, Mtk } from '../../gi/ext';
 import TilePreview from '../tilepreview/tilePreview';
 import Tile from '../../components/layout/Tile';
 import MasonryLayoutManager from './masonryLayoutManager';
@@ -11,18 +10,8 @@ const MASONRY_LAYOUT_SPACING = 32;
 export default class SuggestionsTilePreview extends TilePreview {
     static { registerGObjectClass(this, {
         GTypeName: 'PopupTilePreview',
-        Properties: {
-            blur: GObject.ParamSpec.boolean(
-                'blur',
-                'blur',
-                'Enable or disable the blur effect',
-                GObject.ParamFlags.READWRITE,
-                false,
-            ),
-        },
     })};
 
-    private _blur: boolean;
     private _container: St.BoxLayout;
     private _scrollView: St.ScrollView;
     private _touchHelper: TouchEventHelper;
@@ -34,15 +23,6 @@ export default class SuggestionsTilePreview extends TilePreview {
         gaps?: Clutter.Margin;
     }) {
         super(params);
-
-        // blur not supported due to GNOME shell known bug
-        this._blur = false;
-        /* Settings.bind(
-            Settings.KEY_ENABLE_BLUR_SELECTED_TILEPREVIEW,
-            this,
-            'blur',
-            Gio.SettingsBindFlags.GET,
-        );*/
 
         this._recolor();
         const styleChangedSignalID = St.ThemeContext.get_for_stage(
@@ -81,18 +61,6 @@ export default class SuggestionsTilePreview extends TilePreview {
         this._touchHelper = new TouchEventHelper();
     }
 
-    set blur(value: boolean) {
-        if (this._blur === value) return;
-
-        this._blur = value;
-        // blur not supported due to GNOME shell known bug
-        /* this.get_effect('blur')?.set_enabled(value);
-        if (this._blur) this.add_style_class_name('blur-tile-preview');
-        else this.remove_style_class_name('blur-tile-preview');
-
-        this._recolor();*/
-    }
-
     public override set gaps(newGaps: Clutter.Margin) {
         super.gaps = newGaps;
         this.updateBorderRadius(
@@ -105,11 +73,6 @@ export default class SuggestionsTilePreview extends TilePreview {
 
     _init() {
         super._init();
-
-        const effect = buildBlurEffect(96);
-        effect.set_name('blur');
-        effect.set_enabled(this._blur);
-        this.add_effect(effect);
 
         this.add_style_class_name('selection-tile-preview');
 
