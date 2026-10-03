@@ -3,7 +3,6 @@ import { St, Clutter, Mtk } from '../../gi/ext';
 import TilePreview from '../tilepreview/tilePreview';
 import Tile from '../../components/layout/Tile';
 import MasonryLayoutManager from './masonryLayoutManager';
-import TouchEventHelper from '../../utils/touch';
 
 const MASONRY_LAYOUT_SPACING = 32;
 
@@ -14,7 +13,6 @@ export default class SuggestionsTilePreview extends TilePreview {
 
     private _container: St.BoxLayout;
     private _scrollView: St.ScrollView;
-    private _touchHelper: TouchEventHelper;
 
     constructor(params: {
         parent: Clutter.Actor;
@@ -57,8 +55,6 @@ export default class SuggestionsTilePreview extends TilePreview {
 
         this._scrollView.add_child(this._container);
         this.add_child(this._scrollView);
-
-        this._touchHelper = new TouchEventHelper();
     }
 
     public override set gaps(newGaps: Clutter.Margin) {
@@ -75,8 +71,6 @@ export default class SuggestionsTilePreview extends TilePreview {
         super._init();
 
         this.add_style_class_name('selection-tile-preview');
-
-        this._setupTouchScrolling();
     }
 
     _recolor() {
@@ -140,14 +134,5 @@ export default class SuggestionsTilePreview extends TilePreview {
 
     public removeAllWindows() {
         this._container.destroy_all_children();
-    }
-
-    private _setupTouchScrolling() {
-        this.connect('touch-event', (_, event: Clutter.Event) => {
-            return this._touchHelper.convertPanToScroll(
-                event,
-                this._scrollView,
-            );
-        });
     }
 }

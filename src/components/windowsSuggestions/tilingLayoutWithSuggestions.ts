@@ -11,7 +11,6 @@ import LayoutWidget from '../../components/layout/LayoutWidget';
 import SignalHandling from '../../utils/signalHandling';
 import SuggestionsTilePreview from '../../components/windowsSuggestions/suggestionsTilePreview';
 import TilingShellWindowManager from '../../components/windowManager/tilingShellWindowManager';
-import TouchEventHelper from '../../utils/touch';
 
 const ANIMATION_SPEED = 200;
 const MASONRY_LAYOUT_ROW_HEIGHT = 0.31;
@@ -23,7 +22,6 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
     private _lastTiledWindow: Meta.Window | null;
     private _showing: boolean;
     private _oldPreviews: SuggestionsTilePreview[];
-    private _touchHelper: TouchEventHelper;
 
     constructor(
         innerGaps: Clutter.Margin,
@@ -44,7 +42,6 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
         this._showing = false;
         this._oldPreviews = [];
         this.connect('destroy', () => this._signals.disconnect());
-        this._touchHelper = new TouchEventHelper();
     }
 
     protected override buildTile(
