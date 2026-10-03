@@ -1083,11 +1083,13 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
             margin_end: 0,
         });
 
-        const settings = Gtk.Settings.get_default();
-        const iconNameByTheme = settings?.gtk_application_prefer_dark_theme ? iconName : `${iconName}-dark`;
-
+        // the illustrations are multicolor, so GTK can't recolor them: the
+        // -dark variant is the one drawn in dark strokes for a light style
+        const styleManager = Adw.StyleManager.get_default();
+        const iconForStyle = () =>
+            styleManager.dark ? iconName : `${iconName}-dark`;
         const image = new Gtk.Image({
-            iconName: iconNameByTheme,
+            iconName: iconForStyle(),
             pixel_size: 96,
             margin_top: distance,
             margin_bottom: distance,
@@ -1095,6 +1097,10 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
             margin_end: 0,
             cssClasses: ['image']
         });
+        const darkId = styleManager.connect('notify::dark', () => {
+            image.iconName = iconForStyle();
+        });
+        image.connect('destroy', () => styleManager.disconnect(darkId));
 
         const titleLabel = new Gtk.Label({
             label: title,
