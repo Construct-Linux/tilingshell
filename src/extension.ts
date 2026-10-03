@@ -125,6 +125,15 @@ export default class TilingShellExtension extends Extension {
         this._raiseTogetherManager.enable();
 
         this.createIndicator();
+        // metadata lists unlock-dialog so that locking does not tear the
+        // extension down and rebuild it on unlock; nothing of it is
+        // reachable there: keybindings use ActionMode.NORMAL, window
+        // grabs and window-group actors don't exist on the lock screen,
+        // and the indicator hides itself
+        this._signals.connect(Main.sessionMode, 'updated', () =>
+            this._indicator?.setLocked(Main.sessionMode.isLocked),
+        );
+        this._indicator?.setLocked(Main.sessionMode.isLocked);
 
         if (this._dbus) this._dbus.disable();
         this._dbus = new DBus();

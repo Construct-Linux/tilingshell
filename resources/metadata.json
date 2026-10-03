@@ -5,6 +5,10 @@
   "shell-version": [
     "51"
   ],
+  "session-modes": [
+    "user",
+    "unlock-dialog"
+  ],
   "version": 99,
   "version-name": "18.0",
   "url": "https://github.com/domferr/tilingshell",

@@ -164,7 +164,24 @@ export default class Indicator extends PanelMenu.Button {
     }
 
     public openLayoutEditor() {
+        if (Main.sessionMode.isLocked) return;
         this.openMenu(false);
+    }
+
+    // the extension stays enabled on the lock screen, where the panel keeps
+    // extension indicators visible (ref gnome-shell js/ui/panel.js
+    // _hideIndicators only hides the built-in roles). A layout being edited
+    // survives the lock: its editor follows global.windowGroup's
+    // visibility, which the lock screen hides
+    public setLocked(locked: boolean) {
+        if (locked) {
+            this.menu.close();
+            this._editorDialog?.close();
+            this._editorDialog = null;
+            this.container.hide();
+        } else {
+            this.container.show();
+        }
     }
 
     public saveLayoutOnClick() {
