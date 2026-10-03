@@ -1,26 +1,9 @@
 import { Clutter } from '../../gi/ext';
 import { registerGObjectClass } from '../../utils/gjs';
-import { buildRectangle } from '../../utils/ui';
-import Tile from '../../components/layout/Tile';
-import TilePreview, {
-    TilePreviewConstructorProperties,
-} from '../../components/tilepreview/tilePreview';
+import TilePreview from '../../components/tilepreview/tilePreview';
 
 export default class TilePreviewWithWindow extends TilePreview {
     static { registerGObjectClass(this) }
-    
-    constructor(params: Partial<TilePreviewConstructorProperties>) {
-        super(params);
-        if (params.parent) params.parent.add_child(this);
-
-        this._showing = false;
-        this._rect = params.rect || buildRectangle({});
-        this._gaps = new Clutter.Margin();
-        this.gaps = params.gaps || new Clutter.Margin();
-        this._tile =
-            params.tile ||
-            new Tile({ x: 0, y: 0, width: 0, height: 0, groups: [] });
-    }
 
     public override set gaps(gaps: Clutter.Margin) {
         this._gaps = gaps.copy();
