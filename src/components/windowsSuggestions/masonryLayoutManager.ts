@@ -138,12 +138,6 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
     vfunc_allocate(container: Clutter.Actor, box: Clutter.ActorBox) {
         const children = container.get_children();
         if (children.length === 0) return;
-        console.log(
-            box.get_width(),
-            container.width,
-            box.get_height(),
-            container.height,
-        );
 
         const availableWidth = container.width - 2 * this._spacing;
         const availableHeight = container.height - 2 * this._spacing;
