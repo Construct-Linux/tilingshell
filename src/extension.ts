@@ -231,8 +231,9 @@ export default class TilingShellExtension extends Extension {
                 'span-window-all-tiles',
                 (kb: KeyBindings, dp: Meta.Display) => {
                     const window = dp.focus_window;
-                    const monitorIndex = window.get_monitor();
-                    const manager = this._tilingManagers[monitorIndex];
+                    if (!window) return;
+                    const manager =
+                        this._tilingManagers[window.get_monitor()];
                     if (manager) manager.onSpanAllTiles(window);
                 },
             );
@@ -284,6 +285,7 @@ export default class TilingShellExtension extends Extension {
                 'highlight-current-window',
                 (kb: KeyBindings, dp: Meta.Display) => {
                     const focus_window = dp.get_focus_window();
+                    if (!focus_window) return;
                     getWindows(
                         global.workspaceManager.get_active_workspace(),
                     ).forEach((win) => {
@@ -663,25 +665,16 @@ export default class TilingShellExtension extends Extension {
             return win === focusParent;
         });
 
-        let nextIndex = -1;
-        switch (direction) {
-            case FocusSwitchDirection.PREV:
-                if (focusedIdx === 0 && Settings.WRAPAROUND_FOCUS) {
-                    windowList[windowList.length - 1].activate(
-                        global.get_current_time(),
-                    );
-                } else {
-                    windowList[focusedIdx - 1].activate(
-                        global.get_current_time(),
-                    );
-                }
-                break;
-            case FocusSwitchDirection.NEXT:
-                nextIndex = (focusedIdx + 1) % windowList.length;
-                if (nextIndex > 0 || Settings.WRAPAROUND_FOCUS)
-                    windowList[nextIndex].activate(global.get_current_time());
-                break;
+        if (focusedIdx < 0) return;
+
+        const count = windowList.length;
+        let nextIndex =
+            focusedIdx + (direction === FocusSwitchDirection.PREV ? -1 : 1);
+        if (nextIndex < 0 || nextIndex >= count) {
+            if (!Settings.WRAPAROUND_FOCUS) return;
+            nextIndex = (nextIndex + count) % count;
         }
+        windowList[nextIndex].activate(global.get_current_time());
     }
 
     private _onKeyboardUntileWindow(kb: KeyBindings, display: Meta.Display) {
