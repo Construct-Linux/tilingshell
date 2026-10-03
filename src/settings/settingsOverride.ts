@@ -1,6 +1,17 @@
 import Settings from '../settings/settings';
 import { Gio, GLib } from '../gi/shared';
 
+// the overrides are applied on every enable() and restored on disable():
+// skip the dconf write when the key already holds the value
+function setIfDifferent(
+    giosettings: Gio.Settings,
+    key: string,
+    value: GLib.Variant,
+): boolean {
+    if (giosettings.get_value(key).equal(value)) return true;
+    return giosettings.set_value(key, value);
+}
+
 export default class SettingsOverride {
     // map schema_id with map of keys and old values
     private _overriddenKeys: Map<string, Map<string, GLib.Variant>>;
@@ -83,13 +94,11 @@ export default class SettingsOverride {
             ? schemaMap.get(keyToOverride)
             : giosettings.get_value(keyToOverride);
 
-        const res = giosettings.set_value(keyToOverride, newValue);
-        if (!res) return null;
+        if (!setIfDifferent(giosettings, keyToOverride, newValue)) return null;
 
         if (!schemaMap.has(keyToOverride)) {
             schemaMap.set(keyToOverride, oldValue);
-
-            Settings.OVERRIDDEN_SETTINGS = this._overriddenKeysToJSON();
+            this._save();
         }
 
         return oldValue;
@@ -105,14 +114,12 @@ export default class SettingsOverride {
         const oldValue = overridden.get(keyToOverride);
         if (!oldValue) return null;
 
-        const res = giosettings.set_value(keyToOverride, oldValue);
-
-        if (res) {
+        if (setIfDifferent(giosettings, keyToOverride, oldValue)) {
             overridden.delete(keyToOverride);
             if (overridden.size === 0)
                 this._overriddenKeys.delete(giosettings.schemaId);
 
-            Settings.OVERRIDDEN_SETTINGS = this._overriddenKeysToJSON();
+            this._save();
         }
 
         return oldValue;
@@ -130,8 +137,8 @@ export default class SettingsOverride {
 
                 const toDelete: string[] = [];
                 overridden.forEach((oldValue: GLib.Variant, key: string) => {
-                    const done = giosettings.set_value(key, oldValue);
-                    if (done) toDelete.push(key);
+                    if (setIfDifferent(giosettings, key, oldValue))
+                        toDelete.push(key);
                 });
                 toDelete.forEach((key) => overridden.delete(key));
                 if (overridden.size === 0) schemaToDelete.push(schemaId);
@@ -143,6 +150,12 @@ export default class SettingsOverride {
 
         if (this._overriddenKeys.size === 0) this._overriddenKeys = new Map();
 
-        Settings.OVERRIDDEN_SETTINGS = this._overriddenKeysToJSON();
+        this._save();
+    }
+
+    private _save() {
+        const json = this._overriddenKeysToJSON();
+        if (json !== Settings.OVERRIDDEN_SETTINGS)
+            Settings.OVERRIDDEN_SETTINGS = json;
     }
 }

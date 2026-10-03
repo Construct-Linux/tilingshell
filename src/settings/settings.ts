@@ -710,15 +710,22 @@ export default class Settings {
         );
     }
 
+    // every workspace change, monitor change and enable() saves the
+    // selection: write dconf only when it differs
     static save_selected_layouts(ids: string[][]) {
         if (ids.length === 0) {
-            this._settings?.reset(Settings.KEY_SETTING_SELECTED_LAYOUTS);
+            if (this._settings?.get_user_value(Settings.KEY_SETTING_SELECTED_LAYOUTS))
+                this._settings.reset(Settings.KEY_SETTING_SELECTED_LAYOUTS);
             return;
         }
         const variants = ids.map((monitor_ids) =>
             GLib.Variant.new_strv(monitor_ids),
         );
         const result = GLib.Variant.new_array(null, variants);
+        const current = this._settings?.get_value(
+            Settings.KEY_SETTING_SELECTED_LAYOUTS,
+        );
+        if (current?.equal(result)) return;
         this._settings?.set_value(
             Settings.KEY_SETTING_SELECTED_LAYOUTS,
             result,
