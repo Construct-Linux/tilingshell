@@ -18,7 +18,9 @@ build({
     outdir: distDir,
     bundle: false,
     treeShaking: false,
-    target: 'firefox78',
+    // gjs runs current SpiderMonkey: keep class static blocks and the rest
+    // of ES2024 as written instead of lowering them
+    target: 'es2024',
     platform: 'node',
     format: 'esm',
     plugins: [sassPlugin()],
