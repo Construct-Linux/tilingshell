@@ -1,7 +1,10 @@
+@use "constants";
 @use "snap_assist";
 
 .window-menu-layout {
     .snap-assist-tile {
+        // A tint of the window menu: white over the shell's dark menu, ink (.dark, on a light
+        // surface) at the same alphas.
         border-color: rgba(255, 255, 255, 0.2);
         background-color: rgba(255, 255, 255, 0.2);
         border-radius-value: snap_assist.$snap-assist-tile-border-radius - 2;
@@ -9,8 +12,8 @@
     }
 
     .snap-assist-tile.dark {
-        border-color: rgba(121, 121, 121, 0.2);
-        background-color: rgba(121, 121, 121, 0.2);
+        border-color: rgba(constants.$ink, 0.2);
+        background-color: rgba(constants.$ink, 0.2);
     }
 
     .snap-assist-tile:hover {
@@ -19,7 +22,7 @@
     }
 
     .snap-assist-tile.dark:hover {
-        border-color: rgba(81, 81, 81, 0.78);
-        background-color: rgba(81, 81, 81, 0.6);
+        border-color: rgba(constants.$ink, 0.78);
+        background-color: rgba(constants.$ink, 0.6);
     }
 }

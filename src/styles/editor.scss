@@ -2,13 +2,15 @@
 @use "functions";
 
 .layout-editor {
+    // The editor lies over the desktop: white at an alpha lifts it off any wallpaper.
     background-color: rgba(255, 255, 255, 0.14);
 }
 
 .layout-editor-slider {
+    // A light handle over any wallpaper, ringed in ink so it reads on a light one too.
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 6px;
-    border: 2px solid rgb(65, 65, 65, 0.8);
+    border: 2px solid rgba(constants.$ink, 0.8);
 }
 
 .editable-tile-preview-button {
@@ -47,10 +49,12 @@
         text-align: center;
         font-family: monospace;
         padding: calc(constants.$base-padding / 3) calc(constants.$base-padding * 2);
+        // A key's lower edge: a shadow, black at an alpha as the shell theme's are.
         box-shadow: inset 0px -3px 0px 0px rgba(0, 0, 0, 0.2);
     }
 }
 
 .hover-line {
+    // The split guide under the pointer: a white tint, so the tile under it stays visible.
     background-color: rgba(255, 255, 255, 0.2);
 }

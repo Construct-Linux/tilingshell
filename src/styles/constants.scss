@@ -5,3 +5,9 @@ $base_font_size: 11pt; // font size
 $base_padding: functions.to_em(6px); //6px;
 $base_margin: 4px;
 $base_border_radius: 8px; //to_em(8px);
+
+// CONSTRUCT's palette (brand/palette.toml) - the only colors these stylesheets write, with white
+// and black at an alpha. The shell theme draws everything else; the window border is the accent,
+// set in dconf.
+$ink: #0B1116; // neutral e: a tile on a light surface is the white tile with ink in place of white
+$raised: #1F2A33; // neutral h: the shell's menus and popovers

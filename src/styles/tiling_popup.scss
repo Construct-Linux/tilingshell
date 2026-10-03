@@ -1,5 +1,9 @@
+@use "constants";
+
 .popup-window-preview-container {
-    background-color: rgba(255, 255, 255, 0.7);
+    // The card behind a suggested window is a shell popover, so it takes their surface; the
+    // shell is dark only.
+    background-color: constants.$raised;
     border-radius: 8px;
     padding: 6px;
 }

@@ -38,10 +38,10 @@
 }
 
 .selection-tile-preview {
-    /*box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.2);*/
 }
 
 .blur-tile-preview {
     border: 0;
+    // A shadow is black at an alpha, as the shell theme's are.
     box-shadow: 0px 0px 16px 4px rgba(0, 0, 0, 0.2);
 }

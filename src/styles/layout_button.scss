@@ -12,19 +12,23 @@
     border-width: snap_assist.$snap-assist-tile-border-width;
     border-color: transparent;
 
+    // The layout previews tint the panel's menu: white over the shell's dark menu, ink (.dark, on
+    // a light surface) at the same alphas.
     .snap-assist-tile {
         border-color: rgba(255, 255, 255, 0.4);
         background-color: rgba(255, 255, 255, 0.1);
     }
 
     .snap-assist-tile.dark {
-        border-color: #939393;
-        background-color: #e2e2e2;
+        border-color: rgba(constants.$ink, 0.4);
+        background-color: rgba(constants.$ink, 0.1);
     }
 }
 
 .layout-button:hover,
 .layout-button:checked {
+    // The chosen layout's ring is white, not the accent: the accent marks the focused window's
+    // border, and a second cyan in the same menu would compete with it.
     border-color: rgba(255, 255, 255, 0.7);
 
     .snap-assist-tile {
@@ -33,7 +37,7 @@
     }
 
     .snap-assist-tile.dark {
-        border-color: #6c6c6c;
-        background-color: #c4c4c4;
+        border-color: rgba(constants.$ink, 0.7);
+        background-color: rgba(constants.$ink, 0.25);
     }
 }

@@ -4,6 +4,7 @@ $snap-assist-tile-border-width: 1px;
 $snap-assist-tile-border-radius: 6px;
 
 .snap-assistant {
+    // A shadow is black at an alpha, as the shell theme's are.
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
     border: 0;
     border-radius: constants.$base_border_radius + 2;
@@ -15,7 +16,7 @@ $snap-assist-tile-border-radius: 6px;
     border-radius-value: $snap-assist-tile-border-radius;
     border-width-value: $snap-assist-tile-border-width;
     border-style: solid;
-    // light theme as default
+    // White at an alpha: the tile tints whatever surface it sits on, the shell's dark menus first.
     border-color: rgba(255, 255, 255, 0.2);
     background-color: rgba(255, 255, 255, 0.25);
 }
@@ -26,11 +27,13 @@ $snap-assist-tile-border-radius: 6px;
 }
 
 .snap-assist-tile.dark {
-    border-color: rgba(128, 128, 128, 0.65);
-    background-color: rgba(180, 180, 180, 0.45);
+    // .dark is set when the text around the tile is dark, so the surface is light: the same alphas
+    // in ink, the palette's darkest, keep the tile on the desktop's blue instead of a stock grey.
+    border-color: rgba(constants.$ink, 0.2);
+    background-color: rgba(constants.$ink, 0.25);
 }
 
 .snap-assist-tile.dark:hover {
-    border-color: rgba(94, 94, 94, 0.7);
-    background-color: rgba(154, 154, 154, 0.6);
+    border-color: rgba(constants.$ink, 0.7);
+    background-color: rgba(constants.$ink, 0.4);
 }
