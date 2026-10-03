@@ -18,10 +18,7 @@ export enum EdgeTilingMode {
 
 /** ------------- Utility functions ------------- */
 function get_string(key: string): string {
-    return (
-        Settings.gioSetting.get_string(key) ??
-        Settings.gioSetting.get_default_value(key)?.get_string()[0]
-    );
+    return Settings.gioSetting.get_string(key);
 }
 
 function set_string(key: string, val: string): boolean {
@@ -29,10 +26,7 @@ function set_string(key: string, val: string): boolean {
 }
 
 function get_boolean(key: string): boolean {
-    return (
-        Settings.gioSetting.get_boolean(key) ??
-        Settings.gioSetting.get_default_value(key)?.get_boolean()
-    );
+    return Settings.gioSetting.get_boolean(key);
 }
 
 function set_boolean(key: string, val: boolean): boolean {
@@ -40,10 +34,7 @@ function set_boolean(key: string, val: boolean): boolean {
 }
 
 function get_number(key: string): number {
-    return (
-        Settings.gioSetting.get_int(key) ??
-        Settings.gioSetting.get_default_value(key)?.get_int64()
-    );
+    return Settings.gioSetting.get_int(key);
 }
 
 function set_number(key: string, val: number): boolean {
@@ -51,10 +42,7 @@ function set_number(key: string, val: number): boolean {
 }
 
 function get_unsigned_number(key: string): number {
-    return (
-        Settings.gioSetting.get_uint(key) ??
-        Settings.gioSetting.get_default_value(key)?.get_uint64()
-    );
+    return Settings.gioSetting.get_uint(key);
 }
 
 function set_unsigned_number(key: string, val: number): boolean {
@@ -65,14 +53,12 @@ function get_activationkey(
     key: string,
     defaultValue: ActivationKey,
 ): ActivationKey {
-    let val = Settings.gioSetting.get_strv(key);
-    if (!val || val.length === 0) {
-        val = Settings.gioSetting.get_default_value(key)?.get_strv() ?? [
-            String(defaultValue),
-        ];
-        if (val.length === 0) val = [String(defaultValue)];
-    }
-    return Number(val[0]);
+    // an emptied list falls back to the schema default, then to defaultValue
+    const val = Settings.gioSetting.get_strv(key);
+    if (val.length > 0) return Number(val[0]);
+    const schemaDefault =
+        Settings.gioSetting.get_default_value(key)?.get_strv() ?? [];
+    return schemaDefault.length > 0 ? Number(schemaDefault[0]) : defaultValue;
 }
 
 function set_activationkey(key: string, val: ActivationKey): boolean {
@@ -164,7 +150,9 @@ export default class Settings {
     }
 
     static get gioSetting(): Gio.Settings {
-        return this._settings ?? new Gio.Settings();
+        if (!this._settings)
+            throw new Error('Settings used before initialize() or after destroy()');
+        return this._settings;
     }
 
     static bind(
