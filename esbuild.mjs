@@ -42,12 +42,10 @@ build({
     const generatedFiles = await glob(`${distDir}/**/*.js`, {});
 
     console.log("   🔍", "Verifying imports...");
-    const verification = Promise.all(generatedFiles.map(f => {
-        if (f.includes('prefs.js')) verifyImports(['Clutter', 'Meta', 'Mtk', 'St', 'Shell'], f);
-        else verifyImports(['Gdk', 'Gtk', 'Adw'], f);
+    await Promise.all(generatedFiles.map(f => {
+        if (f.includes('prefs.js')) return verifyImports(['Clutter', 'Meta', 'Mtk', 'St', 'Shell'], f);
+        return verifyImports(['Gdk', 'Gtk', 'Adw'], f);
     }));
-
-    await verification;
     console.log();
     console.log("📁 ", "Extension directory:", distDir);
 });
