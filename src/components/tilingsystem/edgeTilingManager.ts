@@ -110,12 +110,15 @@ export default class EdgeTilingManager extends GObject.Object {
         this._monitorIndex = index;
     }
 
+    // set on every drag tick: look the layout up only when the workspace
+    // changes, refreshLayout() covers a change of the selected layout
     public set workspaceIndex(index: number) {
+        if (index === this._workspaceIndex && this._currentLayout) return;
         this._workspaceIndex = index;
-        this._updateCurrentLayout();
+        this.refreshLayout();
     }
 
-    private _updateCurrentLayout() {
+    public refreshLayout() {
         this._currentLayout = GlobalState.get().getSelectedLayoutOfMonitor(
             this._monitorIndex,
             this._workspaceIndex,

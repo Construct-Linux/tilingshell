@@ -30,6 +30,30 @@ import TilingLayoutWithSuggestions from '../windowsSuggestions/tilingLayoutWithS
 
 const MINIMUM_DISTANCE_TO_RESTORE_ORIGINAL_SIZE = 90;
 
+interface DragSettings {
+    tilingSystem: boolean;
+    tilingActivationKey: ActivationKey;
+    tilingDeactivationKey: ActivationKey;
+    spanMultipleTiles: boolean;
+    spanActivationKey: ActivationKey;
+    activeScreenEdges: boolean;
+    snapAssist: boolean;
+    restoreOriginalSize: boolean;
+}
+
+function readDragSettings(): DragSettings {
+    return {
+        tilingSystem: Settings.TILING_SYSTEM,
+        tilingActivationKey: Settings.TILING_SYSTEM_ACTIVATION_KEY,
+        tilingDeactivationKey: Settings.TILING_SYSTEM_DEACTIVATION_KEY,
+        spanMultipleTiles: Settings.SPAN_MULTIPLE_TILES,
+        spanActivationKey: Settings.SPAN_MULTIPLE_TILES_ACTIVATION_KEY,
+        activeScreenEdges: Settings.ACTIVE_SCREEN_EDGES,
+        snapAssist: Settings.SNAP_ASSIST,
+        restoreOriginalSize: Settings.RESTORE_WINDOW_ORIGINAL_SIZE,
+    };
+}
+
 class SnapAssistingInfo {
     private _snapAssistantLayoutId: string | undefined;
 
@@ -73,6 +97,8 @@ export class TilingManager {
     private _snapAssistingInfo: SnapAssistingInfo;
 
     private _movingWindowTimerId: number | null = null;
+    // read once per grab: the drag poll runs every 15ms on each monitor
+    private _dragSettings: DragSettings = readDragSettings();
 
     private readonly _signals: SignalHandling;
     private readonly _debug: (..._content: unknown[]) => void;
@@ -158,6 +184,7 @@ export class TilingManager {
                     ws.index(),
                 );
                 this._workspaceTilingLayout.get(ws)?.relayout({ layout });
+                this._edgeTilingManager.refreshLayout();
             },
         );
         this._signals.connect(
@@ -172,6 +199,7 @@ export class TilingManager {
                     ws.index(),
                 );
                 this._workspaceTilingLayout.get(ws)?.relayout({ layout });
+                this._edgeTilingManager.refreshLayout();
             },
         );
 
@@ -554,6 +582,7 @@ export class TilingManager {
             });
         }
 
+        this._dragSettings = readDragSettings();
         this._isGrabbingWindow = true;
         this._installRmbFilterIfNeeded();
         this._movingWindowTimerId = GLib.timeout_add(
@@ -683,6 +712,7 @@ export class TilingManager {
         const [x, y, modifier] = TouchPointer.get().isTouchDeviceActive()
             ? TouchPointer.get().get_pointer(window)
             : global.get_pointer();
+        const drag = this._dragSettings;
         const extWin = window as ExtendedWindow;
         extWin.assignedTile = undefined;
         const currPointerPos = { x, y };
@@ -697,7 +727,7 @@ export class TilingManager {
             squaredEuclideanDistance(currPointerPos, this._grabStartPosition) >
                 MINIMUM_DISTANCE_TO_RESTORE_ORIGINAL_SIZE
         ) {
-            if (Settings.RESTORE_WINDOW_ORIGINAL_SIZE) {
+            if (drag.restoreOriginalSize) {
                 const windowRect = window.get_frame_rect();
                 const offsetX = (x - windowRect.x) / windowRect.width;
                 const offsetY = (y - windowRect.y) / windowRect.height;
@@ -718,31 +748,31 @@ export class TilingManager {
 
         const isSpanMultiTilesActivated = this._activationKeyStatus(
             modifier,
-            Settings.SPAN_MULTIPLE_TILES_ACTIVATION_KEY,
+            drag.spanActivationKey,
         );
         const isTilingSystemActivated = this._activationKeyStatus(
             modifier,
-            Settings.TILING_SYSTEM_ACTIVATION_KEY,
+            drag.tilingActivationKey,
         );
-        const deactivationKey = Settings.TILING_SYSTEM_DEACTIVATION_KEY;
+        const deactivationKey = drag.tilingDeactivationKey;
         const isTilingSystemDeactivated =
             deactivationKey === ActivationKey.NONE
                 ? false
                 : this._activationKeyStatus(modifier, deactivationKey);
         const allowSpanMultipleTiles =
-            Settings.SPAN_MULTIPLE_TILES && isSpanMultiTilesActivated;
+            drag.spanMultipleTiles && isSpanMultiTilesActivated;
         const showTilingSystem =
-            Settings.TILING_SYSTEM &&
+            drag.tilingSystem &&
             isTilingSystemActivated &&
             !isTilingSystemDeactivated;
         // ensure we handle window movement only when needed
         // if the snap assistant activation key status is not changed and the mouse is on the same position as before
         // and the tiling system activation key status is not changed, we have nothing to do
         const changedSpanMultipleTiles =
-            Settings.SPAN_MULTIPLE_TILES &&
+            drag.spanMultipleTiles &&
             isSpanMultiTilesActivated !== this._wasSpanMultipleTilesActivated;
         const changedShowTilingSystem =
-            Settings.TILING_SYSTEM &&
+            drag.tilingSystem &&
             isTilingSystemActivated !== this._wasTilingSystemActivated;
         if (
             !changedSpanMultipleTiles &&
@@ -765,7 +795,7 @@ export class TilingManager {
             }
 
             if (
-                Settings.ACTIVE_SCREEN_EDGES &&
+                drag.activeScreenEdges &&
                 !this._snapAssistingInfo.isSnapAssisting &&
                 this._edgeTilingManager.canActivateEdgeTiling(currPointerPos)
             ) {
@@ -780,7 +810,7 @@ export class TilingManager {
                     this._edgeTilingManager.abortEdgeTiling();
                 }
 
-                if (Settings.SNAP_ASSIST) {
+                if (drag.snapAssist) {
                     this._snapAssist.onMovingWindow(
                         window,
                         currPointerPos,
