@@ -9,7 +9,6 @@ import { registerGObjectClass } from '../../utils/gjs';
 
 const debug = logger('LayoutWidget');
 
-// export module LayoutWidget {
 export interface LayoutWidgetConstructorProperties
     extends Partial<St.Widget.ConstructorProps> {
     parent?: Clutter.Actor;
@@ -18,7 +17,6 @@ export interface LayoutWidgetConstructorProperties
     outerGaps: Clutter.Margin;
     containerRect?: Mtk.Rectangle;
 }
-// }
 
 // A widget to draw a layout
 export default class LayoutWidget<

@@ -824,7 +824,6 @@ export class TilingManager {
 
         // we know that the layout must be shown, snap assistant must be closed
         if (!tilingLayout.showing) {
-            // this._debug("open layout below grabbed window");
             tilingLayout.openAbove(window);
             this._snapAssist.close(true);
             // close selection tile if we were performing edge-tiling

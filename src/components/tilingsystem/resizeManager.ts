@@ -222,12 +222,6 @@ export class ResizingManager {
                 break;
         }
 
-        /* let debugWidget = new St.Widget({ style: "border: solid 1px red; border-radius: 2px; background-color: rgba(255, 255, 255, 0.2);"});
-        debugWidget.set_size(borderRect.width, borderRect.height);
-        debugWidget.set_position(borderRect.x, borderRect.y);
-        debugWidget.show();
-        global.windowGroup.add_child(debugWidget);*/
-
         const oppositeSide = this._oppositeSide(side);
         const newRemainingWindows: Set<Meta.Window> = new Set();
         remainingWindows.forEach((otherWin) => {
@@ -363,88 +357,3 @@ export class ResizingManager {
         );
     }
 }
-
-/*
-const WINDOW_CLONE_RESIZE_ANIMATION_TIME = 150;
-const APP_ICON_SIZE = 96;
-
-class WindowClone extends St.Widget {
-    static { registerGObjectClass(this) }
-
-    private _clone: Clutter.Actor;
-    //private _blurWidget: St.Widget;
-
-    constructor(window: Meta.Window) {
-        super({ layoutManager: new Clutter.BinLayout(), styleClass: "custom-tile-preview" });
-        global.windowGroup.add_child(this);
-
-        this._clone = this._createWindowClone(window);
-        this.add_child(this._clone);
-        const sigma = 36;
-        this._clone.add_effect_with_name('blur', new Shell.BlurEffect({
-            //@ts-ignore
-            sigma: sigma,
-            //radius: sigma * 2,
-            brightness: 1,
-            mode: Shell.BlurMode.ACTOR, // blur the widget
-        }));
-
-        const box = new St.BoxLayout({
-            xAlign: Clutter.ActorAlign.CENTER,
-            yAlign: Clutter.ActorAlign.CENTER,
-            xExpand: true,
-            yExpand: true,
-            style: "spacing: 16px;"
-        });
-        setWidgetOrientation(box, true);
-        box.add_child(this._createAppIcon(window, APP_ICON_SIZE));
-        box.add_child(new St.Label({
-            xAlign: Clutter.ActorAlign.CENTER,
-            yAlign: Clutter.ActorAlign.CENTER,
-            text: window.get_title(),
-            style: "color: white;"
-        }));
-        this.add_child(box);
-
-        const windowRect = window.get_frame_rect();
-        this.set_position(windowRect.x, windowRect.y);
-        this.set_size(windowRect.width, windowRect.height);
-
-        //this.updateEffect();
-    }
-
-    private _createWindowClone(window: Meta.Window) {
-        //@ts-ignore
-        //const actor: Clutter.Actor = window.get_compositor_private();
-        //return new Clutter.Clone({
-        //    source: actor
-        //});
-        //@ts-ignore
-        const actor: Clutter.Actor = window.get_compositor_private();
-
-        //@ts-ignore
-        let actorContent = actor.paint_to_content(window.get_frame_rect());
-        let actorClone = new St.Widget({
-            content: actorContent,
-            width: window.get_frame_rect().width,
-            height: window.get_frame_rect().height,
-            xExpand: true,
-            yExpand: true
-        });
-        actorClone.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
-        return actorClone;
-    }
-
-    private _createAppIcon(window: Meta.Window, size: number) {
-        let tracker = Shell.WindowTracker.get_default();
-        const app = tracker.get_window_app(window);
-        let appIcon = app
-            ? app.create_icon_texture(size)
-            : new St.Icon({ iconName: 'application-x-executable', iconSize: size });
-        appIcon.xExpand = appIcon.yExpand = true;
-        appIcon.xAlign = appIcon.yAlign = Clutter.ActorAlign.CENTER;
-
-        return appIcon;
-    }
-}
-*/

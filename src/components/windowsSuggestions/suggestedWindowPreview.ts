@@ -7,7 +7,6 @@ import {
     Graphene,
     Atk,
     Pango,
-    GLib,
 } from '../../gi/ext';
 
 const WINDOW_OVERLAY_FADE_TIME = 200;
@@ -34,7 +33,6 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
     private _previewContainer: St.Widget;
     private _stackAbove: Clutter.Actor | null;
     private _destroyed: boolean;
-    private _idleHideOverlayId: number;
 
     constructor(metaWindow: Meta.Window) {
         super({
@@ -49,7 +47,6 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
         this._metaWindow = metaWindow;
         this._windowActor = metaWindow.get_compositor_private();
         this._destroyed = false;
-        this._idleHideOverlayId = 0;
 
         this._previewContainer = new St.Widget({
             style_class: 'popup-window-preview-container',
@@ -238,14 +235,6 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
 
     _addWindow(metaWindow: Meta.Window) {
         this.clone = this.windowContainer.layout_manager.add_window(metaWindow);
-        // if (!clone) return;
-
-        /* // We expect this to be used for all interaction rather than
-        // the ClutterClone; as the former is reactive and the latter
-        // is not, this just works for most cases. However, for DND all
-        // actors are picked, so DND operations would operate on the clone.
-        // To avoid this, we hide it from pick.
-        Shell.util_set_hidden_from_pick(clone, true);*/
     }
 
     vfunc_has_overlaps() {
@@ -298,11 +287,6 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
 
     _onDestroy() {
         this._destroyed = true;
-
-        if (this._idleHideOverlayId > 0) {
-            GLib.source_remove(this._idleHideOverlayId);
-            this._idleHideOverlayId = 0;
-        }
     }
 
     vfunc_enter_event(event: Clutter.Event) {
@@ -313,25 +297,7 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
     vfunc_leave_event(event: Clutter.Event) {
         if (this._destroyed) return super.vfunc_leave_event(event);
 
-        /* if ((event.get_flags() & Clutter.EventFlags.FLAG_GRAB_NOTIFY) !== 0 &&
-            global.stage.get_grab_actor() === this._closeButton)
-            return super.vfunc_leave_event(event);*/
-
         if (!this['has-pointer']) this.hideOverlay(true);
-        /* if (this._idleHideOverlayId > 0)
-            GLib.source_remove(this._idleHideOverlayId);
-
-        this._idleHideOverlayId = GLib.timeout_add(
-            GLib.PRIORITY_DEFAULT,
-            WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, () => {
-                if (!this['has-pointer'])
-                    this.hideOverlay(true);
-
-                this._idleHideOverlayId = 0;
-                return GLib.SOURCE_REMOVE;
-            });
-
-        GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlayId');*/
         return super.vfunc_leave_event(event);
     }
 

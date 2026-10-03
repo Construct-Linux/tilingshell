@@ -209,20 +209,6 @@ export default class WindowBorder extends St.Widget {
         );
         if (!content) return;
 
-        /* for debugging purposes
-        const elem = new St.Widget({
-            x: 100,
-            y: 100,
-            width,
-            height,
-            content,
-            name: 'elem',
-        });
-        global.windowGroup
-            .get_children()
-            .find((el) => el.get_name() === 'elem')
-            ?.destroy();
-        global.windowGroup.add_child(elem);*/
         // @ts-expect-error "content has get_texture() method"
         const texture = content.get_texture();
         const stream = Gio.MemoryOutputStream.new_resizable();

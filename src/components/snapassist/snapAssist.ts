@@ -314,21 +314,6 @@ class SnapAssistContent extends St.BoxLayout {
             this.isBetween(minX, currPointerPos.x, maxX) &&
             this.isBetween(minY, currPointerPos.y, maxY);
 
-        // uncomment to show activation area debugging
-        /* global.windowGroup
-            .get_children()
-            .filter((c) => c.get_name() === 'debug')[0]
-            ?.destroy();
-        const debug = new St.Widget({
-            x: minX,
-            y: minY,
-            height: maxY - minY,
-            width: maxX - minX,
-            style: 'border: 2px solid red; border-radius: 8px;',
-            name: 'debug',
-        });
-        global.windowGroup.add_child(debug); */
-
         if (this._showing && this._isEnlarged === isNear) return;
 
         this._isEnlarged = isNear;

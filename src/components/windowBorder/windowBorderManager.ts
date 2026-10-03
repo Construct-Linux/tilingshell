@@ -85,17 +85,3 @@ export class WindowBorderManager {
         else this._border.trackWindow(metaWindow);
     }
 }
-
-/*
-If in the future we want to have MULTIPLE borders visible AT THE SAME TIME,
-when the windows are restacked we have to restack the borders as well.
-
-display.connect('restacked', (display) => {
-    let wg = Meta.get_window_group_for_display(display); // From GNOME 48 use Meta.Compositor.get_window_group
-    forEachWindowInTheWindowGroup((win) => {
-        winBorder = getWindowBorder(win)
-        winActor = win.get_compositor_private()
-        wg.set_child_above_sibling(winBorder, winActor);
-    });
-});
-*/

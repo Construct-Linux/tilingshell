@@ -247,7 +247,7 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
                     preview.close();
                     newPreviewsArray.push(preview);
                 }
-            } else if (reset /* && !preview.originalRect.intersect(rect)[0]*/) {
+            } else if (reset) {
                 if (preview.restore(true)) {
                     preview.open(undefined, true);
                     newPreviewsArray.push(preview);
@@ -409,21 +409,6 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
                 this._containerRect.height + this._containerRect.y,
             );
         }
-
-        // uncomment to show debugging
-        /* global.windowGroup
-            .get_children()
-            .filter((c) => c.get_name() === 'debug-kb')[0]
-            ?.destroy();
-        const debugWidget = new St.Widget({
-            x: sourceCoords.x - 8,
-            y: sourceCoords.y - 8,
-            height: 16,
-            width: 16,
-            style: 'border: 2px solid red; border-radius: 8px;',
-            name: 'debug-kb',
-        });
-        global.windowGroup.add_child(debugWidget);*/
 
         for (let i = 0; i < this._previews.length; i++) {
             const previewFound = this._previews[i];

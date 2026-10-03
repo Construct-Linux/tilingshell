@@ -295,24 +295,6 @@ export default class EdgeTilingManager extends GObject.Object {
             }
         }
 
-        // Uncomment to show visual debug
-        // Clean up any existing debug widget
-        // global.windowGroup
-        //     .get_children()
-        //     .filter((c) => c.get_name() === 'debug')[0]
-        //     ?.destroy();
-
-        // // Create a new debug widget
-        // const debug = new St.Widget({
-        //     x: this._activeEdgeTile.x,
-        //     y: this._activeEdgeTile.y,
-        //     height: this._activeEdgeTile.height,
-        //     width: this._activeEdgeTile.width,
-        //     style: 'border: 2px solid red',
-        //     name: 'debug',
-        // });
-        // global.windowGroup.add_child(debug);
-
         return {
             changed: true,
             rect: previewRect,
@@ -467,24 +449,6 @@ export default class EdgeTilingManager extends GObject.Object {
             };
         }
 
-        // Uncomment to show visual debug
-        // // Clean up any existing debug widget
-        // global.windowGroup
-        //     .get_children()
-        //     .filter((c) => c.get_name() === 'debug')[0]
-        //     ?.destroy();
-
-        // // Create a new debug widget
-        // const debug = new St.Widget({
-        //     x: this._activeEdgeTile.x,
-        //     y: this._activeEdgeTile.y,
-        //     height: this._activeEdgeTile.height,
-        //     width: this._activeEdgeTile.width,
-        //     style: 'border: 2px solid red',
-        //     name: 'debug',
-        // });
-        // global.windowGroup.add_child(debug);
-
         return {
             changed: true,
             rect: previewRect,
@@ -610,24 +574,6 @@ export default class EdgeTilingManager extends GObject.Object {
                 rect: previewRect,
             };
         }
-
-        // Uncomment to show visual debug
-        // // Clean up any existing debug widget
-        // global.windowGroup
-        //     .get_children()
-        //     .filter((c) => c.get_name() === 'debug')[0]
-        //     ?.destroy();
-
-        // // Create a new debug widget
-        // const debug = new St.Widget({
-        //     x: this._activeEdgeTile.x,
-        //     y: this._activeEdgeTile.y,
-        //     height: this._activeEdgeTile.height,
-        //     width: this._activeEdgeTile.width,
-        //     style: 'border: 2px solid red',
-        //     name: 'debug',
-        // });
-        // global.windowGroup.add_child(debug);
 
         return {
             changed: true,

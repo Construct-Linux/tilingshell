@@ -4,7 +4,6 @@ import GlobalState from '../../utils/globalState';
 import Tile from '../../components/layout/Tile';
 import { registerGObjectClass } from '../../utils/gjs';
 
-// export module TilePreview {
 export interface TilePreviewConstructorProperties
     extends St.Widget.ConstructorProps {
     parent: Clutter.Actor;
@@ -12,7 +11,6 @@ export interface TilePreviewConstructorProperties
     gaps: Clutter.Margin;
     tile: Tile;
 }
-// }
 
 export default class TilePreview extends St.Widget {
     static { registerGObjectClass(this) }
